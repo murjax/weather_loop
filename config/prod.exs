@@ -11,6 +11,8 @@ import Config
 # before starting your production server.
 config :weather_loop, WeatherLoopWeb.Endpoint, cache_static_manifest: "priv/static/cache_manifest.json"
 
+config :weather_loop, weather_api_base_url: "https://api.openweathermap.org"
+
 # Do not print debug messages in production
 config :logger, level: :info
 

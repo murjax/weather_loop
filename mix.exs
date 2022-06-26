@@ -19,7 +19,7 @@ defmodule WeatherLoop.MixProject do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {WeatherLoop.Application, []},
+      mod: {WeatherLoop.Application, [env: Mix.env]},
       extra_applications: [
         :logger,
         :runtime_tools

@@ -6,7 +6,7 @@ defmodule WeatherLoop.Application do
   use Application
 
   @impl true
-  def start(_type, _args) do
+  def start(_type, args) do
     children = [
       # Start the Ecto repository
       WeatherLoop.Repo,
@@ -19,6 +19,12 @@ defmodule WeatherLoop.Application do
       # Start a worker by calling: WeatherLoop.Worker.start_link(arg)
       # {WeatherLoop.Worker, arg}
     ]
+
+    mock_server = {Plug.Cowboy, scheme: :http, plug: WeatherLoop.MockServer, options: [port: 8081]}
+    children = case args do
+      [env: :test] -> children ++ [mock_server]
+      [_] -> children
+    end
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
