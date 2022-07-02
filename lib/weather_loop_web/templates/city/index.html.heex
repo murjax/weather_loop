@@ -1,0 +1,19 @@
+<p>Cities Index</p>
+
+<table>
+  <thead>
+    <th>City</th>
+    <th>Temperature</th>
+    <th>Conditions</th>
+  </thead>
+
+  <tbody>
+    <%= for city <- @cities do %>
+      <tr>
+        <td><%= city.name %></td>
+        <td><%= city.temperature %></td>
+        <td><%= city.weather_title %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

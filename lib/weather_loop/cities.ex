@@ -25,6 +25,8 @@ defmodule WeatherLoop.Cities do
     Repo.get_by(City, name: name)
   end
 
+  def get_city!(id), do: Repo.get!(City, id)
+
   def create_city(attrs \\ %{}) do
     %City{}
     |> City.changeset(attrs)
