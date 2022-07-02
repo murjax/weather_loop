@@ -32,4 +32,10 @@ defmodule WeatherLoop.Cities do
     |> City.changeset(attrs)
     |> Repo.insert()
   end
+
+  def update_city(%City{} = city, attrs) do
+    city
+    |> City.changeset(attrs)
+    |> Repo.update()
+  end
 end

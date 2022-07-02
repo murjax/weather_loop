@@ -4,6 +4,7 @@ defmodule WeatherLoop.Cities.City do
 
   schema "cities" do
     field :name, :string
+    field :state, :string
     field :latitude, :string
     field :longitude, :string
 
@@ -12,7 +13,7 @@ defmodule WeatherLoop.Cities.City do
 
   def changeset(city, params) do
     city
-    |> cast(params, [:name, :latitude, :longitude])
-    |> validate_required([:name, :latitude, :longitude])
+    |> cast(params, [:name, :state, :latitude, :longitude])
+    |> validate_required([:name, :state, :latitude, :longitude])
   end
 end

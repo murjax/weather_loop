@@ -13,7 +13,7 @@ defmodule WeatherLoopWeb.CityController do
         select: [:id, :city_id, :temperature, :weather_title],
         order_by: [desc: :id]
       ), on: snapshot.city_id == city.id,
-      select: %{name: city.name, temperature: snapshot.temperature, weather_title: snapshot.weather_title}
+      select: %{name: city.name, state: city.state, temperature: snapshot.temperature, weather_title: snapshot.weather_title}
 
     cities = WeatherLoop.Repo.all(city_query)
 
@@ -25,11 +25,13 @@ defmodule WeatherLoopWeb.CityController do
     snapshot = WeatherSnapshots.get_latest_snapshot_for_city_id(id)
     current_time_response = Calendar.DateTime.now("America/New_York")
     {:ok, current_time} = current_time_response
-    formatted_time_response = Calendar.Strftime.strftime(current_time, "%b %d %Y - %I:%M:%S%P")
+    formatted_time_response = Calendar.Strftime.strftime(current_time, "%I:%M:%S%P")
+    formatted_date_response = Calendar.Strftime.strftime(current_time, "%b %d %Y")
     {:ok, formatted_time} = formatted_time_response
+    {:ok, formatted_date} = formatted_date_response
 
 
 
-    render(conn, "show.html", city: city, snapshot: snapshot, formatted_time: formatted_time)
+    render(conn, "show.html", city: city, snapshot: snapshot, formatted_time: formatted_time, formatted_date: formatted_date)
   end
 end

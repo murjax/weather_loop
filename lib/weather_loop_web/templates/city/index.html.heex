@@ -3,6 +3,7 @@
 <table>
   <thead>
     <th>City</th>
+    <th>State</th>
     <th>Temperature</th>
     <th>Conditions</th>
   </thead>
@@ -11,6 +12,7 @@
     <%= for city <- @cities do %>
       <tr>
         <td><%= city.name %></td>
+        <td><%= city.state %></td>
         <td><%= city.temperature %></td>
         <td><%= city.weather_title %></td>
       </tr>
