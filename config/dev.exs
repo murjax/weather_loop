@@ -26,6 +26,7 @@ config :weather_loop, WeatherLoopWeb.Endpoint,
   secret_key_base: "DSp0J1jAabUIMYzdXVbfd755yQLWHtFh3+jaD9tIMn/cGZ/n3dRq7Xt29GGRTj/Q",
   watchers: [
     # Start the esbuild watcher by calling Esbuild.install_and_run(:default, args)
+    tailwind: {Tailwind, :install_and_run, [:default, ~w(--watch)]},
     esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
   ]
 
