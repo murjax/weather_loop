@@ -11,7 +11,7 @@ defmodule WeatherLoopWeb.CityController do
       left_join: snapshot in subquery(
         from snapshot in WeatherSnapshot,
         select: [:id, :city_id, :temperature, :weather_title],
-        where: is_nil(snapshot.forecast),
+        where: snapshot.forecast == false,
         order_by: [desc: :id]
       ), on: snapshot.city_id == city.id,
       select: %{name: city.name, state: city.state, temperature: snapshot.temperature, weather_title: snapshot.weather_title}
@@ -23,7 +23,10 @@ defmodule WeatherLoopWeb.CityController do
 
   def show(conn, %{"id" => id}) do
     city = Cities.get_city!(id)
-    snapshot = WeatherSnapshots.get_latest_snapshot_for_city_id(id)
+    current_weather_snapshot = WeatherSnapshots.get_current_weather_snapshot_for_city_id(id)
+    forecasts_start_at = DateTime.now!("Etc/UTC") |> DateTime.to_unix
+    forecast_snapshots = WeatherSnapshots.get_forecast_snapshots_for_city_id(id, forecasts_start_at)
+
     current_time_response = Calendar.DateTime.now("America/New_York")
     {:ok, current_time} = current_time_response
     formatted_time_response = Calendar.Strftime.strftime(current_time, "%I:%M:%S%P")
@@ -31,8 +34,13 @@ defmodule WeatherLoopWeb.CityController do
     {:ok, formatted_time} = formatted_time_response
     {:ok, formatted_date} = formatted_date_response
 
-
-
-    render(conn, "show.html", city: city, snapshot: snapshot, formatted_time: formatted_time, formatted_date: formatted_date)
+    render(conn,
+      "show.html",
+      city: city,
+      current_weather_snapshot: current_weather_snapshot,
+      forecast_snapshots: forecast_snapshots,
+      formatted_time: formatted_time,
+      formatted_date: formatted_date
+    )
   end
 end

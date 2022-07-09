@@ -7,51 +7,15 @@
   </div>
 
   <div class="flex mt-4">
-    <div class="py-4 px-2 bg-white rounded-md w-3/12">
-      <div class="text-xl mb-2">Currently</div>
-      <div class="flex">
-        <div class="text-5xl"><%= round(@snapshot.temperature) %>°</div>
-        <img src={WeatherLoop.SnapshotConversions.icon_url(@snapshot.weather_icon)} />
-      </div>
-      <p>Feels Like: <%= round(@snapshot.feels_like) %>°</p>
-      <p>Conditions: <%= @snapshot.weather_title %></p>
-    </div>
-    <div class="py-4 px-2 mx-4 bg-white rounded-md w-3/12">
-      <table class="table-auto w-full">
-        <tbody>
-          <tr class="border-b">
-            <td>Humidity</td>
-            <td><%= @snapshot.humidity %></td>
-          </tr>
-          <tr class="border-b">
-            <td>Visibility</td>
-            <td>
-              <%= WeatherLoop.SnapshotConversions.visibility_miles(@snapshot.visibility) %> miles
-            </td>
-          </tr>
-          <tr class="border-b">
-            <td>Wind</td>
-            <td>
-              <%= WeatherLoop.SnapshotConversions.cardinal_direction(@snapshot.wind_direction) %> at <%= round(@snapshot.wind_speed) %> mph
-            </td>
-          </tr>
-          <tr class="border-b">
-            <td>Sunrise</td>
-            <td>
-              <%= WeatherLoop.SnapshotConversions.convert_epoch(@snapshot.sunrise) %>
-            </td>
-          </tr>
-          <tr class="border-b">
-            <td>Sunset</td>
-            <td>
-              <%= WeatherLoop.SnapshotConversions.convert_epoch(@snapshot.sunset) %>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <%= render "_conditions_cards.html", snapshot: @current_weather_snapshot, forecast: false %>
     <div class="py-4 px-2 mx-4 bg-white rounded-md w-6/12">
       <iframe width="560" height="350" src={@city.radar_url}></iframe>
     </div>
   </div>
+
+  <%= for snapshot <- @forecast_snapshots do %>
+    <div class="flex mt-4">
+      <%= render "_conditions_cards.html", snapshot: snapshot, forecast: true %>
+    </div>
+  <% end %>
 </div>
