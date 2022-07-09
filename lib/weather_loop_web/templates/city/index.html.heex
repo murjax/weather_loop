@@ -11,7 +11,9 @@
   <tbody>
     <%= for city <- @cities do %>
       <tr>
-        <td><%= city.name %></td>
+        <td>
+          <%= link(city.name, to: Routes.city_path(@conn, :show, city.id)) %>
+        </td>
         <td><%= city.state %></td>
         <td><%= city.temperature %></td>
         <td><%= city.weather_title %></td>
