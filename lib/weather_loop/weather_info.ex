@@ -1,4 +1,9 @@
 defmodule WeatherLoop.WeatherInfo do
+  def forecast_time(weather_info) do
+    %{"dt" => time} = weather_info
+    time
+  end
+
   def temperature(weather_info) do
     %{"main" => %{"temp" => temp}} = weather_info
     temp

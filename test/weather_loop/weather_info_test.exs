@@ -37,6 +37,12 @@ defmodule WeatherLoop.WeatherInfoTest do
     "wind" => %{"deg" => 150, "speed" => 10.36}
   }
 
+  test ".forecast_time" do
+    expected_forecast_time = 1656711307
+    forecast_time = WeatherLoop.WeatherInfo.forecast_time(@weather_info)
+    assert forecast_time == expected_forecast_time
+  end
+
   test ".temperature" do
     expected_temperature = 89.5
     temperature = WeatherLoop.WeatherInfo.temperature(@weather_info)

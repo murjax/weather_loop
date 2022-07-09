@@ -9,8 +9,9 @@ defmodule WeatherLoopWeb.CityController do
   def index(conn, _params) do
     city_query = from city in City, as: :city,
       left_join: snapshot in subquery(
-        from WeatherSnapshot,
+        from snapshot in WeatherSnapshot,
         select: [:id, :city_id, :temperature, :weather_title],
+        where: is_nil(snapshot.forecast),
         order_by: [desc: :id]
       ), on: snapshot.city_id == city.id,
       select: %{name: city.name, state: city.state, temperature: snapshot.temperature, weather_title: snapshot.weather_title}

@@ -14,6 +14,18 @@ defmodule WeatherLoop.WeatherSnapshots.WeatherSnapshot do
     :weather_icon,
     :sunrise,
     :sunset,
+    :forecast_time,
+    :forecast,
+    :city_id
+  ]
+
+  @required_fields [
+    :temperature,
+    :feels_like,
+    :humidity,
+    :weather_title,
+    :weather_description,
+    :weather_icon,
     :city_id
   ]
 
@@ -29,6 +41,8 @@ defmodule WeatherLoop.WeatherSnapshots.WeatherSnapshot do
     field :weather_icon, :string
     field :sunrise, :integer
     field :sunset, :integer
+    field :forecast_time, :integer
+    field :forecast, :boolean
     belongs_to :city, WeatherLoop.Cities.City
 
     timestamps()
@@ -37,6 +51,6 @@ defmodule WeatherLoop.WeatherSnapshots.WeatherSnapshot do
   def changeset(weather_snapshot, params) do
     weather_snapshot
     |> cast(params, @changeset_fields)
-    |> validate_required(@changeset_fields)
+    |> validate_required(@required_fields)
   end
 end
