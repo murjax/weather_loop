@@ -1,5 +1,5 @@
 <div class="container bg-slate-100 mx-auto p-6 h-screen">
-  <div>
+  <div class="ml-2">
     <p>WeatherLoop (v1)</p>
     <div class="text-2xl"><%= @city.name %>, <%= @city.state %></div>
     <p><%= @formatted_date %></p>
@@ -8,14 +8,14 @@
 
   <div class="flex mt-4">
     <%= render "_conditions_cards.html", snapshot: @current_weather_snapshot, forecast: false %>
-    <div class="py-4 px-2 mx-4 bg-white rounded-md w-6/12">
-      <iframe width="560" height="350" src={@city.radar_url}></iframe>
+    <div class="py-4 px-2 mx-4 bg-white rounded-md w-9/12">
+      <iframe width="860" height="350" src={@city.radar_url}></iframe>
     </div>
   </div>
 
-  <%= for snapshot <- @forecast_snapshots do %>
-    <div class="flex mt-4">
+  <div class="flex mt-4">
+    <%= for snapshot <- @forecast_snapshots do %>
       <%= render "_conditions_cards.html", snapshot: snapshot, forecast: true %>
-    </div>
-  <% end %>
+    <% end %>
+  </div>
 </div>

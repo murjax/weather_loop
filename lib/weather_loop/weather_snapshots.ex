@@ -40,6 +40,16 @@ defmodule WeatherLoop.WeatherSnapshots do
     Repo.all(query)
   end
 
+  def get_forecast_snapshots_for_city_id(city_id, starting_at, limit) do
+    query = from snapshot in WeatherSnapshot,
+      where: [city_id: ^city_id],
+      where: snapshot.forecast == true,
+      order_by: [asc: :id],
+      limit: ^limit
+
+    Repo.all(query)
+  end
+
   def create_weather_snapshot(attrs \\ %{}) do
     %WeatherSnapshot{}
     |> WeatherSnapshot.changeset(attrs)

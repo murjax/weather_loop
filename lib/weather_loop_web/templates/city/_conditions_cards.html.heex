@@ -1,4 +1,4 @@
-<div class="py-4 px-2 bg-white rounded-md w-3/12">
+<div class="py-4 mx-2 px-2 bg-white rounded-md w-3/12">
   <%= if @forecast do %>
     <div class="text-xl mb-2">
       <%= WeatherLoop.SnapshotConversions.convert_epoch(@snapshot.forecast_time) %>
@@ -13,11 +13,9 @@
   </div>
   <p>Feels Like: <%= round(@snapshot.feels_like) %>°</p>
   <p>Conditions: <%= @snapshot.weather_title %></p>
-</div>
 
-<%= if !@forecast do %>
-  <div class="py-4 px-2 mx-4 bg-white rounded-md w-3/12">
-    <table class="table-auto w-full">
+  <%= if !@forecast do %>
+    <table class="table-auto w-full mt-3">
       <tbody>
         <tr class="border-b">
           <td>Humidity</td>
@@ -49,5 +47,5 @@
         </tr>
       </tbody>
     </table>
-  </div>
-<% end %>
+  <% end %>
+</div>
