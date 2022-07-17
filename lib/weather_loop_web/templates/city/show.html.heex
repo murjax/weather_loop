@@ -6,6 +6,26 @@
     <p><%= @formatted_time %></p>
   </div>
 
+  <div class="carousel"
+       data-flickity='{ "wrapAround": true }'>
+    <div class="carousel-cell">
+      <div class="flex mt-4">
+        <%= render "_conditions_cards.html", snapshot: @current_weather_snapshot, forecast: false %>
+        <div class="py-4 px-2 mx-4 bg-white rounded-md w-9/12">
+          <iframe width="860" height="350" src={@city.radar_url}></iframe>
+        </div>
+      </div>
+    </div>
+    <div class="carousel-cell">
+      <div class="flex mt-4">
+        <%= for snapshot <- @forecast_snapshots do %>
+          <%= render "_conditions_cards.html", snapshot: snapshot, forecast: true %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <!--
   <div class="flex mt-4">
     <%= render "_conditions_cards.html", snapshot: @current_weather_snapshot, forecast: false %>
     <div class="py-4 px-2 mx-4 bg-white rounded-md w-9/12">
@@ -18,4 +38,5 @@
       <%= render "_conditions_cards.html", snapshot: snapshot, forecast: true %>
     <% end %>
   </div>
+  -->
 </div>
