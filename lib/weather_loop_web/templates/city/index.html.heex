@@ -1,22 +1,27 @@
-<p>Cities Index</p>
-
-<table>
+<h1 class="text-center text-4xl">Cities</h1>
+<table class="border-collapse table-auto w-full text-sm mt-4">
   <thead>
-    <th>City</th>
-    <th>State</th>
-    <th>Temperature</th>
-    <th>Conditions</th>
+    <th class="border-b dark:border-slate-600 font-medium p-4 pl-8 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left">City</th>
+    <th class="border-b dark:border-slate-600 font-medium p-4 pl-8 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left">State</th>
+    <th class="border-b dark:border-slate-600 font-medium p-4 pl-8 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left">Temperature</th>
+    <th class="border-b dark:border-slate-600 font-medium p-4 pl-8 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left">Conditions</th>
   </thead>
 
-  <tbody>
+  <tbody class="bg-white dark:bg-slate-800">
     <%= for city <- @cities do %>
       <tr>
-        <td>
+        <td class="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400 text-blue-600">
           <%= link(city.name, to: Routes.city_path(@conn, :show, city.id)) %>
         </td>
-        <td><%= city.state %></td>
-        <td><%= city.temperature %></td>
-        <td><%= city.weather_title %></td>
+        <td class="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">
+          <%= city.state %>
+        </td>
+        <td class="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">
+          <%= city.temperature %>
+        </td>
+        <td class="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">
+          <%= city.weather_title %>
+        </td>
       </tr>
     <% end %>
   </tbody>

@@ -12,8 +12,9 @@ defmodule WeatherLoopWeb.CityController do
         from snapshot in WeatherSnapshot,
         select: [:id, :city_id, :temperature, :weather_title],
         where: snapshot.forecast == false,
-        order_by: [desc: :id]
+        order_by: [asc: :id]
       ), on: snapshot.city_id == city.id,
+      distinct: city.id,
       select: %{id: city.id, name: city.name, state: city.state, temperature: snapshot.temperature, weather_title: snapshot.weather_title}
 
     cities = WeatherLoop.Repo.all(city_query)
