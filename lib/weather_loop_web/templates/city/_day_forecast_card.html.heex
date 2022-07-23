@@ -1,0 +1,9 @@
+<div class="py-4 mx-2 px-2 bg-white rounded-md w-3/12">
+  <div class="text-xl mb-2">
+    <%= WeatherLoop.SnapshotConversions.convert_epoch_day(@snapshot.time) %>
+  </div>
+
+  <div class="text-5xl">High: <%= round(@snapshot.high_temperature) %>°</div>
+  <div class="text-5xl">Low: <%= round(@snapshot.low_temperature) %>°</div>
+  <p>Conditions: <%= @snapshot.primary_condition %></p>
+</div>

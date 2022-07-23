@@ -23,6 +23,13 @@
         <% end %>
       </div>
     </div>
+    <div class="carousel-cell">
+      <div class="flex mt-4">
+        <%= for snapshot <- @day_forecasts do %>
+          <%= render "_day_forecast_card.html", snapshot: snapshot %>
+        <% end %>
+      </div>
+    </div>
   </div>
 
   <!--

@@ -51,6 +51,21 @@ defmodule WeatherLoop.SnapshotConversions do
     time_string
   end
 
+  def convert_epoch_day(epoch) do
+    {:ok, time_string} =
+      Calendar.DateTime.Parse.unix!(epoch)
+      |> Calendar.DateTime.shift_zone!("America/New_York")
+      |> Calendar.Strftime.strftime("%m/%d")
+    time_string
+  end
+
+  def raw_convert_epoch(epoch) do
+    {:ok, time} =
+      Calendar.DateTime.Parse.unix!(epoch)
+      |> Calendar.DateTime.shift_zone!("America/New_York")
+    time
+  end
+
   def icon_url(weather_icon) do
     "http://openweathermap.org/img/wn/#{weather_icon}.png"
   end

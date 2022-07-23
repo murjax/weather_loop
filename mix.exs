@@ -55,6 +55,7 @@ defmodule WeatherLoop.MixProject do
       {:figaro_elixir, "~> 1.0.0"},
       {:tesla, "~> 1.4"},
       {:hackney, "~> 1.17"},
+      {:tzdata, "~> 1.1"},
       {:calendar, "~> 1.0.0"},
       {:tailwind, "~> 0.1", runtime: Mix.env() == :dev}
     ]

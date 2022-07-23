@@ -27,6 +27,8 @@ defmodule WeatherLoopWeb.CityController do
     current_weather_snapshot = WeatherSnapshots.get_current_weather_snapshot_for_city_id(id)
     forecasts_start_at = DateTime.now!("Etc/UTC") |> DateTime.to_unix
     forecast_snapshots = WeatherSnapshots.get_forecast_snapshots_for_city_id(id, forecasts_start_at, 4)
+    all_forecast_snapshots = WeatherSnapshots.get_forecast_snapshots_for_city_id(id, forecasts_start_at)
+    day_forecasts = WeatherSnapshots.get_day_forecasts(all_forecast_snapshots)
 
     current_time_response = Calendar.DateTime.now("America/New_York")
     {:ok, current_time} = current_time_response
@@ -40,6 +42,7 @@ defmodule WeatherLoopWeb.CityController do
       city: city,
       current_weather_snapshot: current_weather_snapshot,
       forecast_snapshots: forecast_snapshots,
+      day_forecasts: day_forecasts,
       formatted_time: formatted_time,
       formatted_date: formatted_date
     )
