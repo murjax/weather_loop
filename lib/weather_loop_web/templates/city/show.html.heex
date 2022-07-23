@@ -7,7 +7,7 @@
   </div>
 
   <div class="carousel"
-       data-flickity='{ "wrapAround": true }'>
+       data-flickity='{ "wrapAround": true, "autoPlay": 10000, "prevNextButtons": false }'>
     <div class="carousel-cell">
       <div class="flex mt-4">
         <%= render "_conditions_cards.html", snapshot: @current_weather_snapshot, forecast: false %>
