@@ -32,9 +32,7 @@ defmodule WeatherLoopWeb.CityController do
 
     current_time_response = Calendar.DateTime.now("America/New_York")
     {:ok, current_time} = current_time_response
-    formatted_time_response = Calendar.Strftime.strftime(current_time, "%I:%M:%S%P")
     formatted_date_response = Calendar.Strftime.strftime(current_time, "%b %d %Y")
-    {:ok, formatted_time} = formatted_time_response
     {:ok, formatted_date} = formatted_date_response
 
     render(conn,
@@ -43,7 +41,6 @@ defmodule WeatherLoopWeb.CityController do
       current_weather_snapshot: current_weather_snapshot,
       forecast_snapshots: forecast_snapshots,
       day_forecasts: day_forecasts,
-      formatted_time: formatted_time,
       formatted_date: formatted_date
     )
   end

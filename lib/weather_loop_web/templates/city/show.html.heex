@@ -1,11 +1,18 @@
-<div class="container bg-slate-100 mx-auto p-6 h-screen">
-  <div class="ml-2">
+<div class="flex justify-between bg-black text-white">
+  <div class="p-2">
     <p>WeatherLoop (v1)</p>
     <div class="text-2xl"><%= @city.name %>, <%= @city.state %></div>
-    <p><%= @formatted_date %></p>
-    <p><%= @formatted_time %></p>
   </div>
+  <div class="p-2">
+    <p><%= @formatted_date %></p>
+    <p id="clock"></p>
+  </div>
+</div>
 
+<div class="container bg-slate-100 mx-auto p-6 h-screen">
+  <audio id="weather-audio" controls autoplay>
+    <source src={Routes.static_path(@conn, "/audio/weather_audio.mp3")} type="audio/mpeg">
+  </audio>
   <div class="carousel"
        data-flickity='{ "wrapAround": true, "autoPlay": 10000, "prevNextButtons": false }'>
     <div class="carousel-cell">
