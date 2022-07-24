@@ -113,11 +113,21 @@ defmodule WeatherLoop.WeatherSnapshots do
         "Clear"
     end
 
+    weather_icon = cond do
+      has_rain ->
+        "10d"
+      has_clouds ->
+        "03d"
+      true ->
+        "01d"
+    end
+
     %{
       time: day_epoch,
       high_temperature: high_temperature,
       low_temperature: low_temperature,
-      primary_condition: primary_condition
+      primary_condition: primary_condition,
+      weather_icon: weather_icon
     }
   end
 end

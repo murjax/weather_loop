@@ -3,7 +3,10 @@
     <%= WeatherLoop.SnapshotConversions.convert_epoch_day(@snapshot.time) %>
   </div>
 
-  <div class="text-5xl">High: <%= round(@snapshot.high_temperature) %>°</div>
-  <div class="text-5xl">Low: <%= round(@snapshot.low_temperature) %>°</div>
+  <div class="flex">
+    <div class="text-5xl"><%= round(@snapshot.high_temperature) %>°</div>
+    <div class="text-2xl text-slate-400">/<%= round(@snapshot.low_temperature) %>°</div>
+    <img src={WeatherLoop.SnapshotConversions.icon_url(@snapshot.weather_icon)} />
+  </div>
   <p>Conditions: <%= @snapshot.primary_condition %></p>
 </div>
