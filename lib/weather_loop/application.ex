@@ -15,7 +15,8 @@ defmodule WeatherLoop.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: WeatherLoop.PubSub},
       # Start the Endpoint (http/https)
-      WeatherLoopWeb.Endpoint
+      WeatherLoopWeb.Endpoint,
+      WeatherLoop.WeatherRefresher
       # Start a worker by calling: WeatherLoop.Worker.start_link(arg)
       # {WeatherLoop.Worker, arg}
     ]
