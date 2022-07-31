@@ -2,14 +2,21 @@ defmodule WeatherLoop.WeatherApi do
   alias WeatherLoop.Cities.City
   alias WeatherLoop.CurrentWeatherApi
   alias WeatherLoop.ForecastWeatherApi
+  alias WeatherLoop.WeatherSnapshots
 
   def capture_snapshots(%City{} = city) do
     city
+    |> delete_old_snapshots
     |> get_weather_info
     |> create_snapshots
   end
 
   def capture_snapshots(nil), do: nil
+
+  defp delete_old_snapshots(%City{} = city) do
+    WeatherSnapshots.delete_snapshots_for_city_id(city.id)
+    city
+  end
 
   defp get_weather_info(%City{} = city) do
     current_weather_info = get_current_weather_info(city)
@@ -33,7 +40,7 @@ defmodule WeatherLoop.WeatherApi do
   end
 
   defp create_snapshot(attributes) do
-    result = WeatherLoop.WeatherSnapshots.create_weather_snapshot(attributes)
+    result = WeatherSnapshots.create_weather_snapshot(attributes)
     {:ok, snapshot} = result
     snapshot
   end

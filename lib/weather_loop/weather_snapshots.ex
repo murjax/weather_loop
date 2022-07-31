@@ -21,6 +21,10 @@ defmodule WeatherLoop.WeatherSnapshots do
     Repo.all(WeatherSnapshot)
   end
 
+  def get_weather_snapshot!(id), do: Repo.get!(WeatherSnapshot, id)
+
+  def get_weather_snapshot(id), do: Repo.get(WeatherSnapshot, id)
+
   def get_current_weather_snapshot_for_city_id(city_id) do
     query = from snapshot in WeatherSnapshot,
       where: [city_id: ^city_id],
@@ -129,5 +133,10 @@ defmodule WeatherLoop.WeatherSnapshots do
       primary_condition: primary_condition,
       weather_icon: weather_icon
     }
+  end
+
+  def delete_snapshots_for_city_id(city_id) do
+    from(snapshot in WeatherSnapshot, where: [city_id: ^city_id])
+    |> Repo.delete_all
   end
 end

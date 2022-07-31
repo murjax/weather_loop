@@ -7,15 +7,31 @@ defmodule WeatherLoop.WeatherApiTest do
   setup _context do
     latitude = "30.2919324"
     longitude = "-81.4027473"
+
     city_attrs = %{name: @city_name, state: "FL", latitude: latitude, longitude: longitude}
     {:ok, city} = WeatherLoop.Cities.create_city(city_attrs)
-    {:ok, city: city}
+
+    snapshot_attrs = %{
+      temperature: 90.2,
+      feels_like: 95.3,
+      humidity: 70,
+      weather_title: "Clear",
+      weather_description: "Clear",
+      weather_icon: "01d",
+      city_id: city.id
+    }
+    {:ok, snapshot} = WeatherLoop.WeatherSnapshots.create_weather_snapshot(snapshot_attrs)
+
+    {:ok, city: city, snapshot: snapshot}
   end
 
   test ".capture_snapshots", context do
     snapshots = WeatherLoop.WeatherApi.capture_snapshots(context[:city])
     [current_weather_snapshot | snapshots] = snapshots
     [forecast_weather_snapshot | _] = snapshots
+
+    # Old snapshots for this city should be deleted.
+    assert WeatherLoop.WeatherSnapshots.get_weather_snapshot(context[:snapshot].id) == nil
 
     assert current_weather_snapshot.temperature == 89.5
     assert current_weather_snapshot.feels_like == 80.38
