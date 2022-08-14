@@ -42,6 +42,23 @@ liveSocket.connect()
 // >> liveSocket.disableLatencySim()
 window.liveSocket = liveSocket
 
+let musicStarted = false;
+const toggleMusicButton = document.getElementById("toggle-music");
+
+function toggleMusic() {
+  const audio = document.getElementById("weather-audio");
+
+  if (musicStarted) {
+    musicStarted = false;
+    toggleMusicButton.innerHTML = '<i class="fa-solid fa-play"></i>';
+    audio.pause();
+  } else {
+    musicStarted = true;
+    toggleMusicButton.innerHTML = '<i class="fa-solid fa-pause"></i>';
+    audio.play();
+  }
+}
+
 function currentTime() {
   let date = new Date();
   let hh = date.getHours();
@@ -71,3 +88,17 @@ function currentTime() {
   let t = setTimeout(function(){ currentTime() }, 1000);
 }
 currentTime();
+
+if (toggleMusicButton) {
+  toggleMusicButton.addEventListener('click', toggleMusic, false);
+}
+
+const carousel = document.querySelector(".carousel");
+if (carousel) {
+  const flickity = new Flickity(carousel, {
+    wrapAround: true,
+    autoPlay: 10000,
+    pauseAutoPlayOnHover: false,
+    prevNextButtons: false
+  });
+}

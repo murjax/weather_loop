@@ -10,16 +10,21 @@
 </div>
 
 <div class="container bg-slate-100 mx-auto p-6 h-screen">
-  <audio id="weather-audio" controls autoplay>
+  <button
+    id="toggle-music"
+    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+  >
+    <i class="fa-solid fa-play"></i>
+  </button>
+  <audio id="weather-audio" class="invisible" controls loop>
     <source src={Routes.static_path(@conn, "/audio/weather_audio.mp3")} type="audio/mpeg">
   </audio>
-  <div class="carousel"
-       data-flickity='{ "wrapAround": true, "autoPlay": 10000, "prevNextButtons": false }'>
+  <div class="carousel">
     <div class="carousel-cell">
       <div class="flex mt-4">
         <%= render "_conditions_cards.html", snapshot: @current_weather_snapshot, forecast: false %>
         <div class="py-4 px-2 mx-4 bg-white rounded-md w-9/12">
-          <iframe width="860" height="350" src={@city.radar_url}></iframe>
+          <iframe id="radar-iframe" width="860" height="350" src={@city.radar_url}></iframe>
         </div>
       </div>
     </div>
