@@ -24,14 +24,7 @@ defmodule WeatherLoopWeb.CityController do
 
   def show(conn, %{"id" => id}) do
     city = Cities.get_city!(id)
-    decorated_snapshot_collection = WeatherSnapshots.get_decorated_snapshot_collection_for_city_id(id)
 
-    render(conn,
-      "show.html",
-      city: city,
-      current_weather_snapshot: decorated_snapshot_collection[:current_weather_snapshot],
-      forecast_snapshots: decorated_snapshot_collection[:forecast_snapshots],
-      day_forecasts: decorated_snapshot_collection[:day_forecasts]
-    )
+    render(conn, "show.html", city: city)
   end
 end
