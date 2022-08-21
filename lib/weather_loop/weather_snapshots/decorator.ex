@@ -1,4 +1,6 @@
 defmodule WeatherLoop.WeatherSnapshots.DecoratedWeatherSnapshot do
+  @derive Jason.Encoder
+
   defstruct [
     :temperature,
     :feels_like,

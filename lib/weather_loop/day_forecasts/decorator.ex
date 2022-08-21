@@ -1,4 +1,6 @@
 defmodule WeatherLoop.DayForecasts.DecoratedDayForecast do
+  @derive Jason.Encoder
+
   defstruct [
     :high_temperature,
     :low_temperature,
@@ -20,7 +22,7 @@ defmodule WeatherLoop.DayForecasts.Decorator do
     %DecoratedDayForecast{
       high_temperature: round(snapshot.high_temperature),
       low_temperature: round(snapshot.low_temperature),
-      time: SnapshotConversions.convert_epoch(snapshot.time),
+      time: SnapshotConversions.convert_epoch_day(snapshot.time),
       primary_condition: snapshot.primary_condition,
       icon_url: SnapshotConversions.icon_url(snapshot.weather_icon)
     }

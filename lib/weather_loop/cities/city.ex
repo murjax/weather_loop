@@ -2,6 +2,15 @@ defmodule WeatherLoop.Cities.City do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @encode_fields [
+    :name,
+    :state,
+    :latitude,
+    :longitude,
+    :radar_url
+  ]
+  @derive {Jason.Encoder, only: @encode_fields}
+
   schema "cities" do
     field :name, :string
     field :state, :string
