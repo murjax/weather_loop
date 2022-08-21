@@ -60,6 +60,18 @@ function toggleMusic() {
   }
 }
 
+function currentDate() {
+  const date = new Date();
+  const formattedDate = date.toDateString();
+  const dateElement = document.getElementById("date");
+
+  if (dateElement) {
+    dateElement.innerText = formattedDate;
+    setTimeout(function(){ currentDate() }, 1000);
+  }
+}
+currentDate();
+
 function currentTime() {
   let date = new Date();
   let hh = date.getHours();
@@ -85,8 +97,11 @@ function currentTime() {
 
    let time = hh + ":" + mm + ":" + ss + session;
 
-  document.getElementById("clock").innerText = time;
-  let t = setTimeout(function(){ currentTime() }, 1000);
+  const timeElement = document.getElementById("clock");
+  if (timeElement) {
+    timeElement.innerText = time;
+    setTimeout(function(){ currentTime() }, 1000);
+  }
 }
 currentTime();
 

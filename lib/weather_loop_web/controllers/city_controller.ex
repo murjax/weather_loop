@@ -24,24 +24,14 @@ defmodule WeatherLoopWeb.CityController do
 
   def show(conn, %{"id" => id}) do
     city = Cities.get_city!(id)
-    current_weather_snapshot = WeatherSnapshots.get_current_weather_snapshot_for_city_id(id)
-    forecasts_start_at = DateTime.now!("Etc/UTC") |> DateTime.to_unix
-    forecast_snapshots = WeatherSnapshots.get_forecast_snapshots_for_city_id(id, forecasts_start_at, 4)
-    all_forecast_snapshots = WeatherSnapshots.get_forecast_snapshots_for_city_id(id, forecasts_start_at)
-    day_forecasts = WeatherSnapshots.get_day_forecasts(all_forecast_snapshots)
-
-    current_time_response = Calendar.DateTime.now("America/New_York")
-    {:ok, current_time} = current_time_response
-    formatted_date_response = Calendar.Strftime.strftime(current_time, "%b %d %Y")
-    {:ok, formatted_date} = formatted_date_response
+    decorated_snapshot_collection = WeatherSnapshots.get_decorated_snapshot_collection_for_city_id(id)
 
     render(conn,
       "show.html",
       city: city,
-      current_weather_snapshot: current_weather_snapshot,
-      forecast_snapshots: forecast_snapshots,
-      day_forecasts: day_forecasts,
-      formatted_date: formatted_date
+      current_weather_snapshot: decorated_snapshot_collection[:current_weather_snapshot],
+      forecast_snapshots: decorated_snapshot_collection[:forecast_snapshots],
+      day_forecasts: decorated_snapshot_collection[:day_forecasts]
     )
   end
 end

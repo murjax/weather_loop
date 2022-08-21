@@ -56,6 +56,30 @@ defmodule WeatherLoop.WeatherSnapshots do
     Repo.all(query)
   end
 
+  def get_decorated_snapshot_collection_for_city_id(city_id) do
+    snapshot_collection = get_snapshot_collection_for_city_id(city_id)
+
+    %{
+      current_weather_snapshot: WeatherLoop.WeatherSnapshots.Decorator.decorate(snapshot_collection[:current_weather_snapshot]),
+      forecast_snapshots: WeatherLoop.WeatherSnapshots.Decorator.decorate_collection(snapshot_collection[:forecast_snapshots]),
+      day_forecasts: WeatherLoop.DayForecasts.Decorator.decorate_collection(snapshot_collection[:day_forecasts])
+    }
+  end
+
+  def get_snapshot_collection_for_city_id(city_id) do
+    current_weather_snapshot = get_current_weather_snapshot_for_city_id(city_id)
+    forecasts_start_at = DateTime.now!("Etc/UTC") |> DateTime.to_unix
+    forecast_snapshots = get_forecast_snapshots_for_city_id(city_id, forecasts_start_at, 4)
+    all_forecast_snapshots = get_forecast_snapshots_for_city_id(city_id, forecasts_start_at)
+    day_forecasts = get_day_forecasts(all_forecast_snapshots)
+
+    %{
+      current_weather_snapshot: current_weather_snapshot,
+      forecast_snapshots: forecast_snapshots,
+      day_forecasts: day_forecasts
+    }
+  end
+
   def create_weather_snapshot(attrs \\ %{}) do
     %WeatherSnapshot{}
     |> WeatherSnapshot.changeset(attrs)

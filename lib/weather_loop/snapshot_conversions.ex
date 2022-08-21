@@ -1,9 +1,11 @@
 defmodule WeatherLoop.SnapshotConversions do
+  def visibility_miles(nil), do: nil
   def visibility_miles(visibility_meters) do
     visibility_meters / 1609.344
     |> round
   end
 
+  def cardinal_direction(nil), do: nil
   def cardinal_direction(direction_degrees) do
     case direction_degrees do
       x when x in 0..11 ->
@@ -43,6 +45,12 @@ defmodule WeatherLoop.SnapshotConversions do
     end
   end
 
+  def wind_detail(nil, nil), do: nil
+  def wind_detail(wind_direction, wind_speed) do
+    "#{cardinal_direction(wind_direction)} at #{round(wind_speed)} mph"
+  end
+
+  def convert_epoch(nil), do: nil
   def convert_epoch(epoch) do
     {:ok, time_string} =
       Calendar.DateTime.Parse.unix!(epoch)
@@ -51,6 +59,7 @@ defmodule WeatherLoop.SnapshotConversions do
     time_string
   end
 
+  def convert_epoch_day(nil), do: nil
   def convert_epoch_day(epoch) do
     {:ok, time_string} =
       Calendar.DateTime.Parse.unix!(epoch)
