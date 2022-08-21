@@ -3,7 +3,9 @@ import renderForecastSnapshots from "./templates/forecast_snapshot";
 import renderDayForecasts from "./templates/day_forecast";
 
 async function fetchCityData(cityId) {
-  const response = await fetch(`http://localhost:4000/api/cities/${cityId}`);
+  const host = window.location.host;
+  const protocol = window.location.protocol;
+  const response = await fetch(`${protocol}//${host}/api/cities/${cityId}`);
   return response.json();
 }
 
