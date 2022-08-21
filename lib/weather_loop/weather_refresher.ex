@@ -18,12 +18,7 @@ defmodule WeatherLoop.WeatherRefresher do
   defp refresh_weather do
     cities = WeatherLoop.Cities.list_cities()
 
-    Enum.each(
-      cities,
-      fn city ->
-        WeatherLoop.WeatherApi.capture_snapshots(city)
-      end
-    )
+    Enum.each(cities, fn city -> WeatherLoop.WeatherApi.capture_snapshots(city) end)
 
     WeatherLoopWeb.Endpoint.broadcast!("city", "weather_updated", %{message: "weather updated"})
   end

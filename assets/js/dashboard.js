@@ -1,6 +1,5 @@
-import renderCurrentWeatherSnapshot from "./templates/current_weather_snapshot";
-import renderForecastSnapshots from "./templates/forecast_snapshot";
-import renderDayForecasts from "./templates/day_forecast";
+import "./city_socket.js"
+import renderCityData from "./render_city_data";
 
 const headerElement = document.getElementById("dashboard-header");
 
@@ -83,22 +82,5 @@ if (headerElement) {
     });
   }
 
-  async function fetchCityData() {
-    const response = await fetch(`http://localhost:4000/api/cities/${cityId}`);
-    return response.json();
-  }
-
-  async function renderCityData() {
-    const data = await fetchCityData();
-    if (!data) { return; }
-
-    const currentWeatherSnapshot = data.snapshots.current_weather_snapshot;
-    const forecastSnapshots = data.snapshots.forecast_snapshots;
-    const dayForecasts = data.snapshots.day_forecasts;
-
-    renderCurrentWeatherSnapshot(currentWeatherSnapshot);
-    renderForecastSnapshots(forecastSnapshots);
-    renderDayForecasts(dayForecasts);
-  }
-  renderCityData();
+  renderCityData(cityId);
 }

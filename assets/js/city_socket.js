@@ -3,6 +3,7 @@
 
 // Bring in Phoenix channels client library:
 import {Socket} from "phoenix"
+import renderCityData from "./render_city_data";
 
 // And connect to the path in "lib/weather_loop_web/endpoint.ex". We pass the
 // token for authentication. Read below how it should be used.
@@ -60,7 +61,12 @@ socket.connect()
 let channel = socket.channel("city", {})
 
 channel.on("weather_updated", payload => {
-  console.log("weather updated message received");
+  const headerElement = document.getElementById("dashboard-header");
+
+  if (headerElement) {
+    const cityId = headerElement.getAttribute("data-city-id");
+    renderCityData(cityId);
+  }
 });
 
 channel.join()
