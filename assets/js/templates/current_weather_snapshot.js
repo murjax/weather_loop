@@ -14,7 +14,7 @@ const render = function renderCurrentWeatherSnapshot(snapshot) {
       <tbody>
         <tr class="border-b">
           <td>Humidity</td>
-          <td>${snapshot.humidity}</td>
+          <td>${snapshot.humidity}%</td>
         </tr>
         <tr class="border-b">
           <td>Visibility</td>
