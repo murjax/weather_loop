@@ -23,8 +23,8 @@ defmodule WeatherLoopWeb.Router do
   scope "/", WeatherLoopWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
-    resources "/cities", CityController, only: [:index, :show]
+    get "/", CityController, :index
+    resources "/cities", CityController, only: [:show]
   end
 
   # Other scopes may use custom stacks.

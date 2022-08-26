@@ -78,7 +78,7 @@ if (headerElement) {
   if (carousel) {
     const flickity = new Flickity(carousel, {
       wrapAround: true,
-      autoPlay: 10000,
+      autoPlay: 20000,
       pauseAutoPlayOnHover: false,
       prevNextButtons: false
     });

@@ -6,6 +6,7 @@ defmodule WeatherLoop.WeatherRefresher do
   end
 
   def init(state) do
+    refresh_weather()
     :timer.send_interval(600_000, :work)
     {:ok, state}
   end
