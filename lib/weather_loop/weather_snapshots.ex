@@ -86,43 +86,29 @@ defmodule WeatherLoop.WeatherSnapshots do
     |> Repo.insert()
   end
 
-  def get_day_forecasts(snapshots) do
-    {:ok, current_time} = Calendar.DateTime.now("America/New_York")
+  def delete_snapshots_for_city_id(city_id) do
+    from(snapshot in WeatherSnapshot, where: [city_id: ^city_id])
+    |> Repo.delete_all
+  end
 
-    {:ok, day_one_time} = Calendar.DateTime.add(current_time, 86400)
-    day_one_date = Calendar.DateTime.to_date(day_one_time)
-    {:ok, day_two_time} = Calendar.DateTime.add(current_time, 172800)
-    day_two_date = Calendar.DateTime.to_date(day_two_time)
-    {:ok, day_three_time} = Calendar.DateTime.add(current_time, 259200)
-    day_three_date = Calendar.DateTime.to_date(day_three_time)
+  defp get_day_forecasts(snapshots) do
+    forecast_times = WeatherLoop.DayForecasts.ForecastTimes.calculate
+    day_one = forecast_times[:day_one]
+    day_two = forecast_times[:day_two]
+    day_three = forecast_times[:day_three]
 
-    {:ok, day_one_beginning} = DateTime.new(day_one_date, ~T[00:00:00.000], "America/New_York")
-    {:ok, day_one_end} = DateTime.new(day_one_date, ~T[23:59:59.999], "America/New_York")
-    day_one_beginning_epoch = DateTime.to_unix(day_one_beginning)
-    day_one_end_epoch = DateTime.to_unix(day_one_end)
+    day_one_snapshots = snapshots_for_day(snapshots, day_one[:start_of_day], day_one[:end_of_day])
+    day_two_snapshots = snapshots_for_day(snapshots, day_two[:start_of_day], day_two[:end_of_day])
+    day_three_snapshots = snapshots_for_day(snapshots, day_three[:start_of_day], day_three[:end_of_day])
 
-    {:ok, day_two_beginning} = DateTime.new(day_two_date, ~T[00:00:00.000], "America/New_York")
-    {:ok, day_two_end} = DateTime.new(day_two_date, ~T[23:59:59.999], "America/New_York")
-    day_two_beginning_epoch = DateTime.to_unix(day_two_beginning)
-    day_two_end_epoch = DateTime.to_unix(day_two_end)
-
-    {:ok, day_three_beginning} = DateTime.new(day_three_date, ~T[00:00:00.000], "America/New_York")
-    {:ok, day_three_end} = DateTime.new(day_three_date, ~T[23:59:59.999], "America/New_York")
-    day_three_beginning_epoch = DateTime.to_unix(day_three_beginning)
-    day_three_end_epoch = DateTime.to_unix(day_three_end)
-
-    day_one_snapshots = Enum.filter(snapshots, fn snapshot -> snapshot.forecast_time >= day_one_beginning_epoch && snapshot.forecast_time <= day_one_end_epoch end)
-    day_two_snapshots = Enum.filter(snapshots, fn snapshot -> snapshot.forecast_time >= day_two_beginning_epoch && snapshot.forecast_time <= day_two_end_epoch end)
-    day_three_snapshots = Enum.filter(snapshots, fn snapshot -> snapshot.forecast_time >= day_three_beginning_epoch && snapshot.forecast_time <= day_three_end_epoch end)
-
-    day_one_forecast = get_day_forecast(day_one_snapshots, day_one_beginning_epoch)
-    day_two_forecast = get_day_forecast(day_two_snapshots, day_two_beginning_epoch)
-    day_three_forecast = get_day_forecast(day_three_snapshots, day_three_beginning_epoch)
+    day_one_forecast = get_day_forecast(day_one_snapshots, day_one[:start_of_day])
+    day_two_forecast = get_day_forecast(day_two_snapshots, day_two[:start_of_day])
+    day_three_forecast = get_day_forecast(day_three_snapshots, day_three[:start_of_day])
 
     [day_one_forecast, day_two_forecast, day_three_forecast]
   end
 
-  def get_day_forecast(snapshots, day_epoch) do
+  defp get_day_forecast(snapshots, day_epoch) do
     temperatures = Enum.map(snapshots, fn snapshot -> snapshot.temperature end)
     low_temperature = Enum.min(temperatures)
     high_temperature = Enum.max(temperatures)
@@ -130,11 +116,14 @@ defmodule WeatherLoop.WeatherSnapshots do
     conditions = Enum.map(snapshots, fn snapshot -> snapshot.weather_title end)
 
     has_rain = Enum.any?(conditions, fn condition -> condition == "Rain" end)
+    has_snow = Enum.any?(conditions, fn condition -> condition == "Snow" end)
     has_clouds = Enum.any?(conditions, fn condition -> condition == "Clouds" end)
 
     primary_condition = cond do
       has_rain ->
         "Rain"
+      has_snow ->
+        "Snow"
       has_clouds ->
         "Clouds"
       true ->
@@ -144,6 +133,8 @@ defmodule WeatherLoop.WeatherSnapshots do
     weather_icon = cond do
       has_rain ->
         "10d"
+      has_snow ->
+        "13d"
       has_clouds ->
         "03d"
       true ->
@@ -159,8 +150,7 @@ defmodule WeatherLoop.WeatherSnapshots do
     }
   end
 
-  def delete_snapshots_for_city_id(city_id) do
-    from(snapshot in WeatherSnapshot, where: [city_id: ^city_id])
-    |> Repo.delete_all
+  defp snapshots_for_day(snapshots, start_of_day, end_of_day) do
+    Enum.filter(snapshots, fn snapshot -> snapshot.forecast_time >= start_of_day && snapshot.forecast_time <= end_of_day end)
   end
 end
