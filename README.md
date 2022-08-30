@@ -15,11 +15,11 @@ A simple weather dashboard built on Phoenix.
 ### Local setup:
   1. Clone project: `git clone git@github.com:murjax/weather_loop.git`
   2. Navigate into folder `cd weather_loop`
-  3. Install dependencies: `mix deps.get`
-  4. Setup database `mix ecto.setup`
-  5. Add background audio file to `/priv/static/audio/weather_audio.mp3`
-  6. Add background images to `/priv/static/images/backgrounds`. Files are named by number (e.g. 1.jpg, 2.jpg, etc).
-  7. Add `config/application.yml` with variable `weather_api_key` set to your OpenWeatherMap API key.
+  3. Add background audio file to `/priv/static/audio/weather_audio.mp3`
+  4. Add background images to `/priv/static/images/backgrounds`. Files are named by number (e.g. 1.jpg, 2.jpg, etc).
+  5. Add `config/application.yml` with variable `weather_api_key` set to your OpenWeatherMap API key.
+  6. Install dependencies: `mix deps.get`
+  7. Setup database `mix ecto.setup`
   8. Open IEx to add a city: `iex -S mix`
   9. Create a map with city attributes:
   ```
