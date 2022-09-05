@@ -14,17 +14,11 @@ defmodule WeatherLoopWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/api", WeatherLoopWeb.Api do
-    pipe_through :api
-
-    resources "/cities", CityController, only: [:show]
-  end
-
   scope "/", WeatherLoopWeb do
     pipe_through :browser
 
     get "/", CityController, :index
-    resources "/cities", CityController, only: [:show]
+    live "/cities/:id", CityLive
   end
 
   # Other scopes may use custom stacks.

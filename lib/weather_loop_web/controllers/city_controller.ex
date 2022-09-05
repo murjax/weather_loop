@@ -3,8 +3,6 @@ defmodule WeatherLoopWeb.CityController do
   import Ecto.Query, only: [from: 2]
   alias WeatherLoop.WeatherSnapshots.WeatherSnapshot
   alias WeatherLoop.Cities.City
-  alias WeatherLoop.WeatherSnapshots
-  alias WeatherLoop.Cities
 
   def index(conn, _params) do
     city_query = from city in City, as: :city,
@@ -20,11 +18,5 @@ defmodule WeatherLoopWeb.CityController do
     cities = WeatherLoop.Repo.all(city_query)
 
     render(conn, "index.html", cities: cities)
-  end
-
-  def show(conn, %{"id" => id}) do
-    city = Cities.get_city!(id)
-
-    render(conn, "show.html", city: city)
   end
 end

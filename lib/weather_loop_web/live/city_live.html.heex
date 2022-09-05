@@ -1,0 +1,122 @@
+<div
+  id="dashboard-header"
+  class="flex justify-between bg-black text-white"
+  data-city-id={@city.id}
+>
+  <div class="p-2">
+    <p>WeatherLoop (v1)</p>
+    <div class="text-2xl"><%= @city.name %>, <%= @city.state %></div>
+  </div>
+  <div class="p-2">
+    <p id="date"></p>
+    <p id="clock"></p>
+  </div>
+</div>
+
+<div class="container mx-auto h-screen">
+  <img id="background-1" class="container-background fadein" src="/images/backgrounds/1.jpg">
+  <img id="background-2" class="container-background fadeout" src="/images/backgrounds/2.jpg">
+  <img id="background-3" class="container-background fadeout" src="/images/backgrounds/3.jpg">
+  <img id="background-4" class="container-background fadeout" src="/images/backgrounds/4.jpg">
+  <div class="p-6 relative">
+    <button
+      id="toggle-music"
+      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+    >
+      <i class="fa-solid fa-play"></i>
+    </button>
+    <audio id="weather-audio" class="invisible" controls loop phx-update="ignore">
+      <source src={Routes.static_path(WeatherLoopWeb.Endpoint, "/audio/weather_audio.mp3")} type="audio/mpeg">
+    </audio>
+    <div class="carousel" id="dashboard-carousel" phx-update="ignore">
+      <div class="carousel-cell">
+        <div class="flex mt-4">
+          <div class="py-4 mx-2 px-2 bg-white rounded-md w-3/12">
+            <div id="current-weather-snapshot">
+              <div class="text-xl mb-2">Currently</div>
+
+              <div class="flex">
+                <div class="text-5xl"><%= @current_weather_snapshot.temperature %>°</div>
+                <img src={@current_weather_snapshot.icon_url} />
+              </div>
+              <p>Feels Like: <%= @current_weather_snapshot.feels_like %>°</p>
+              <p>Conditions: <%= @current_weather_snapshot.weather_title %></p>
+
+              <table class="table-auto w-full mt-3">
+                <tbody>
+                  <tr class="border-b">
+                    <td>Humidity</td>
+                    <td><%= @current_weather_snapshot.humidity %>%</td>
+                  </tr>
+                  <tr class="border-b">
+                    <td>Visibility</td>
+                    <td>
+                      <%= @current_weather_snapshot.visibility %> miles
+                    </td>
+                  </tr>
+                  <tr class="border-b">
+                    <td>Wind</td>
+                    <td>
+                      <%= @current_weather_snapshot.wind %>
+                    </td>
+                  </tr>
+                  <tr class="border-b">
+                    <td>Sunrise</td>
+                    <td>
+                      <%= @current_weather_snapshot.sunrise %>
+                    </td>
+                  </tr>
+                  <tr class="border-b">
+                    <td>Sunset</td>
+                    <td>
+                      <% @current_weather_snapshot.sunset %>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="py-4 px-2 mx-4 bg-white rounded-md w-9/12">
+            <iframe id="radar-iframe" phx-update="ignore" width="860" height="350" src={@city.radar_url}></iframe>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-cell">
+        <div id="forecast-snapshots" class="flex mt-4">
+          <%= for snapshot <- @forecast_snapshots do %>
+            <div class="py-4 mx-2 px-2 bg-white rounded-md w-3/12">
+              <div class="text-xl mb-2">
+                <%= snapshot.forecast_time %>
+              </div>
+
+              <div class="flex">
+                <div class="text-5xl"><%= snapshot.temperature %>°</div>
+                <img src={snapshot.icon_url} />
+              </div>
+              <p>Feels Like: <%= snapshot.feels_like %></p>
+              <p>Conditions: <%= snapshot.weather_title %></p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      <div class="carousel-cell">
+        <div id="day-forecasts" class="flex mt-4">
+          <%= for snapshot <- @day_forecasts do %>
+            <div class="py-4 mx-2 px-2 bg-white rounded-md w-3/12">
+              <div class="text-xl mb-2">
+                <%= snapshot.time %>
+              </div>
+
+              <div class="flex">
+                <div class="text-5xl"><%= snapshot.high_temperature %>°</div>
+                <div class="text-2xl text-slate-400">/<%= snapshot.low_temperature %>°</div>
+                <img src={snapshot.icon_url} />
+              </div>
+              <p>Conditions: <%= snapshot.primary_condition %></p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
