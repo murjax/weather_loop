@@ -1,4 +1,3 @@
-import "./city_socket.js"
 import setupAudio from "./setup_audio";
 import setupClock from "./setup_clock";
 import setupCarousel from "./setup_carousel";
