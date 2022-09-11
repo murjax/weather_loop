@@ -1,3 +1,9 @@
+<div class="flex justify-end">
+  <div class="mr-2 text-blue-400">
+    <div><%= link "Settings", to: Routes.user_settings_path(@conn, :edit) %></div>
+    <div><%= link "Log out", to: Routes.user_session_path(@conn, :delete), method: :delete %></div>
+  </div>
+</div>
 <h1 class="text-center text-4xl">Cities</h1>
 <table class="border-collapse table-auto w-full text-sm mt-4">
   <thead>
