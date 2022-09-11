@@ -38,4 +38,9 @@ defmodule WeatherLoop.Cities do
     |> City.changeset(attrs)
     |> Repo.update()
   end
+
+  def delete_city(%City{} = city) do
+    city
+    |> Repo.delete()
+  end
 end

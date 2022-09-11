@@ -5,12 +5,14 @@
   </div>
 </div>
 <h1 class="text-center text-4xl">Cities</h1>
+<div class="ml-2 text-blue-400"><%= link "Add City", to: Routes.city_path(@conn, :new) %></div>
 <table class="border-collapse table-auto w-full text-sm mt-4">
   <thead>
     <th class="border-b dark:border-slate-600 font-medium p-4 pl-8 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left">City</th>
     <th class="border-b dark:border-slate-600 font-medium p-4 pl-8 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left">State</th>
     <th class="border-b dark:border-slate-600 font-medium p-4 pl-8 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left">Temperature</th>
     <th class="border-b dark:border-slate-600 font-medium p-4 pl-8 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left">Conditions</th>
+    <th class="border-b dark:border-slate-600 font-medium p-4 pl-8 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left">Actions</th>
   </thead>
 
   <tbody class="bg-white dark:bg-slate-800">
@@ -27,6 +29,14 @@
         </td>
         <td class="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">
           <%= city.weather_title %>
+        </td>
+        <td class="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">
+          <div class="text-blue-400">
+            <%= link "Edit", to: Routes.city_path(@conn, :edit, city.id) %>
+          </div>
+          <div class="text-red-400">
+            <%= link "Delete", to: Routes.city_path(@conn, :delete, city.id), method: :delete %>
+          </div>
         </td>
       </tr>
     <% end %>

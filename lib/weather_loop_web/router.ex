@@ -21,6 +21,7 @@ defmodule WeatherLoopWeb.Router do
     pipe_through [:browser, :require_authenticated_user]
 
     get "/", CityController, :index
+    resources "/cities", CityController, only: [:new, :create, :edit, :update, :delete]
     live "/cities/:id", CityLive
   end
 

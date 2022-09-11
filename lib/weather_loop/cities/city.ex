@@ -23,7 +23,7 @@ defmodule WeatherLoop.Cities.City do
     timestamps()
   end
 
-  def changeset(city, params) do
+  def changeset(city, params \\ %{}) do
     city
     |> cast(params, [:name, :state, :latitude, :longitude, :radar_url, :user_id])
     |> validate_required([:name, :state, :latitude, :longitude])

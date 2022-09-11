@@ -20,23 +20,11 @@ A simple weather dashboard built on Phoenix.
   5. Add `config/application.yml` with variable `weather_api_key` set to your OpenWeatherMap API key.
   6. Install dependencies: `mix deps.get`
   7. Setup database `mix ecto.setup`
-  8. Open IEx to add a city: `iex -S mix`
-  9. Create a map with city attributes:
-  ```
-    attributes = %{
-      name: "Jacksonville",
-      state: "FL",
-      latitude: "30.3193401",
-      longitude: "-81.6392728",
-      radar_url: "https://radar.weather.gov/"
-    }
-  ```
-  10. Save city with new attributes:
-  ```
-    WeatherLoop.Cities.create_city(attributes)
-  ```
-  11. Close the IEx console.
-  12. Start the server with `mix phx.server`
-  13. Navigate to http://localhost:4000.
+  8. Start the server with `mix phx.server`
+  9. Navigate to http://localhost:4000.
+  10. Register a new user.
+  11. Click "Add a city" to add a new city.
+  12. Fill in the city details. Set the radar url to a variant of https://radar.weather.gov. You can zoom in and configure the radar, then copy the link into this field.
+  13. Save the city.
   14. Click on your city.
   15. Your dashboard is now running!
