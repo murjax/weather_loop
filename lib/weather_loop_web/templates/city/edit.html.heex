@@ -1,7 +1,7 @@
 <h1 class="text-center text-4xl">New City</h1>
 
 <div class="m-2 p-2 border-2">
-  <.form let={f} for={@changeset} action={Routes.city_path(@conn, :update, @city)}>
+  <.form let={f} for={@changeset} action={Routes.city_path(@conn, :update, @city)} multipart={true}>
     <%= if @changeset.action do %>
       <div class="alert alert-danger">
         <p>Oops, something went wrong! Please check the errors below.</p>
@@ -36,6 +36,11 @@
       <%= label f, :radar_url %>
       <%= text_input f, :radar_url, required: true %>
       <%= error_tag f, :radar_url %>
+    </div>
+
+    <div>
+      <%= label f, :background_image %>
+      <%= file_input f, :background_image %>
     </div>
 
     <div>

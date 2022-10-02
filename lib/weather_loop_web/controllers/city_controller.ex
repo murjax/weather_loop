@@ -30,6 +30,8 @@ defmodule WeatherLoopWeb.CityController do
 
   def create(conn, %{"city" => city_params}) do
     city_params = Map.put(city_params, "user_id", conn.assigns.current_user.id)
+    city_params = Cities.upload_background_image(city_params["background_image"])
+                  |> Cities.add_background_image_url_to_params(city_params)
     case Cities.create_city(city_params) do
       {:ok, city} ->
         WeatherLoop.WeatherApi.capture_snapshots(city)
@@ -51,6 +53,9 @@ defmodule WeatherLoopWeb.CityController do
 
   def update(conn, %{"id" => id, "city" => city_params}) do
     city = Cities.get_city!(id)
+
+    city_params = Cities.upload_background_image(city, city_params["background_image"])
+                  |> Cities.add_background_image_url_to_params(city_params)
 
     case Cities.update_city(city, city_params) do
       {:ok, city} ->
