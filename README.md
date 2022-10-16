@@ -15,16 +15,15 @@ A simple weather dashboard built on Phoenix.
 ### Local setup:
   1. Clone project: `git clone git@github.com:murjax/weather_loop.git`
   2. Navigate into folder `cd weather_loop`
-  3. Add background audio file to `/priv/static/audio/weather_audio.mp3`
-  4. Add background images to `/priv/static/images/backgrounds`. Files are named by number (e.g. 1.jpg, 2.jpg, etc).
-  5. Add `config/application.yml` with variable `weather_api_key` set to your OpenWeatherMap API key.
-  6. Install dependencies: `mix deps.get`
-  7. Setup database `mix ecto.setup`
-  8. Start the server with `mix phx.server`
-  9. Navigate to http://localhost:4000.
-  10. Register a new user.
-  11. Click "Add a city" to add a new city.
-  12. Fill in the city details. Set the radar url to a variant of https://radar.weather.gov. You can zoom in and configure the radar, then copy the link into this field.
-  13. Save the city.
-  14. Click on your city.
-  15. Your dashboard is now running!
+  3. Add `config/application.yml` with variable `weather_api_key` set to your OpenWeatherMap API key.
+  4. Install dependencies: `mix deps.get`
+  5. Setup database `mix ecto.setup`
+  6. Start the server with `mix phx.server`
+  7. Navigate to http://localhost:4000.
+  8. Register a new user.
+  9. Click "Add a city" to add a new city.
+  10. Fill in the city details. Set the radar url to a variant of https://radar.weather.gov. You can zoom in and configure the radar, then copy the link into this field.
+  11. Add background image and optional audio file to run on your city page.
+  12. Save the city.
+  13. Click on your city.
+  14. Your dashboard is now running!

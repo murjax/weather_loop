@@ -8,6 +8,8 @@ defmodule WeatherLoop.Cities.City do
     :latitude,
     :longitude,
     :radar_url,
+    :audio_url,
+    :background_image_url,
     :user_id
   ]
   @derive {Jason.Encoder, only: @encode_fields}
@@ -18,6 +20,8 @@ defmodule WeatherLoop.Cities.City do
     field :latitude, :string
     field :longitude, :string
     field :radar_url, :string
+    field :background_image_url, :string
+    field :audio_url, :string
     belongs_to :user, WeatherLoop.Accounts.User
 
     timestamps()
@@ -25,7 +29,7 @@ defmodule WeatherLoop.Cities.City do
 
   def changeset(city, params \\ %{}) do
     city
-    |> cast(params, [:name, :state, :latitude, :longitude, :radar_url, :user_id])
+    |> cast(params, [:name, :state, :latitude, :longitude, :radar_url, :background_image_url, :audio_url, :user_id])
     |> validate_required([:name, :state, :latitude, :longitude])
   end
 end
