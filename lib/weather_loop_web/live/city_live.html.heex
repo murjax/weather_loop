@@ -16,15 +16,17 @@
 <div class="container mx-auto h-screen">
   <img id="background-1" class="container-background fadein" src={@city.background_image_url}>
   <div class="p-6 relative">
-    <button
-      id="toggle-music"
-      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-    >
-      <i class="fa-solid fa-play"></i>
-    </button>
-    <audio id="weather-audio" class="invisible" controls loop phx-update="ignore">
-      <source src={Routes.static_path(WeatherLoopWeb.Endpoint, "/audio/weather_audio.mp3")} type="audio/mpeg">
-    </audio>
+    <% if @city.audio_url do %>
+      <button
+        id="toggle-music"
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      >
+        <i class="fa-solid fa-play"></i>
+      </button>
+      <audio id="weather-audio" class="invisible" controls loop phx-update="ignore">
+        <source src={@city.audio_url} type="audio/mpeg">
+      </audio>
+    <% end %>
     <div class="carousel" id="dashboard-carousel" phx-update="ignore">
       <div class="carousel-cell">
         <div class="flex mt-4">

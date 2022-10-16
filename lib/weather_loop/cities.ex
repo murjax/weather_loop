@@ -44,8 +44,8 @@ defmodule WeatherLoop.Cities do
     |> Repo.delete()
   end
 
-  def upload_background_image(_, nil), do: nil
-  def upload_background_image(city, upload) do
+  def upload_file(_, nil), do: nil
+  def upload_file(city, upload) do
     extension = Path.extname(upload.filename)
     timestamp = Calendar.DateTime.now_utc
                 |> Calendar.DateTime.Format.unix
@@ -56,8 +56,9 @@ defmodule WeatherLoop.Cities do
     File.cp(upload.path, store_path)
     get_path
   end
-  def upload_background_image(nil), do: nil
-  def upload_background_image(upload) do
+
+  def upload_file(nil), do: nil
+  def upload_file(upload) do
     extension = Path.extname(upload.filename)
     timestamp = Calendar.DateTime.now_utc
                 |> Calendar.DateTime.Format.unix
@@ -69,8 +70,8 @@ defmodule WeatherLoop.Cities do
     get_path
   end
 
-  def add_background_image_url_to_params(nil, params), do: params
-  def add_background_image_url_to_params(background_image_url, params) do
-    Map.put(params, "background_image_url", background_image_url)
+  def add_url_to_params(nil, field, params), do: params
+  def add_url_to_params(background_image_url, field, params) do
+    Map.put(params, field, background_image_url)
   end
 end
