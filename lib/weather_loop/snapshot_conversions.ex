@@ -5,8 +5,7 @@ defmodule WeatherLoop.SnapshotConversions do
     |> round
   end
 
-  def cardinal_direction(nil), do: nil
-  def cardinal_direction(direction_degrees) do
+  def cardinal_direction(direction_degrees) when is_integer(direction_degrees) do
     case direction_degrees do
       x when x in 0..11 ->
         "N"
@@ -42,8 +41,11 @@ defmodule WeatherLoop.SnapshotConversions do
         "NNW"
       x when x in 349..360 ->
         "N"
+      _ ->
+        nil
     end
   end
+  def cardinal_direction(_), do: nil
 
   def wind_detail(nil, nil), do: nil
   def wind_detail(wind_direction, wind_speed) do
