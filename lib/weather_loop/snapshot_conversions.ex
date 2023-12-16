@@ -53,6 +53,9 @@ defmodule WeatherLoop.SnapshotConversions do
   end
 
   def convert_epoch(nil), do: nil
+  def convert_epoch(epoch) when is_float(epoch), do: nil
+  def convert_epoch(epoch) when epoch < 0, do: nil
+  def convert_epoch(epoch) when epoch > 2147483647, do: nil
   def convert_epoch(epoch) do
     {:ok, time_string} =
       Calendar.DateTime.Parse.unix!(epoch)
