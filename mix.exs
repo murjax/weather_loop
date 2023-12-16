@@ -58,7 +58,8 @@ defmodule WeatherLoop.MixProject do
       {:hackney, "~> 1.17"},
       {:tzdata, "~> 1.1"},
       {:calendar, "~> 1.0.0"},
-      {:tailwind, "~> 0.1", runtime: Mix.env() == :dev}
+      {:tailwind, "~> 0.1", runtime: Mix.env() == :dev},
+      {:propcheck, "~> 1.4", only: [:test, :dev]}
     ]
   end
 
