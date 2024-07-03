@@ -65,8 +65,6 @@ config :weather_loop, WeatherLoopWeb.Endpoint,
     ]
   ]
 
-config :weather_loop, weather_api_base_url: "https://api.openweathermap.org"
-
 # Do not include metadata nor timestamps in development logs
 config :logger, :console, format: "[$level] $message\n"
 

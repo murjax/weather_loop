@@ -26,8 +26,6 @@ config :weather_loop, WeatherLoopWeb.Endpoint,
 # In test we don't send emails.
 config :weather_loop, WeatherLoop.Mailer, adapter: Swoosh.Adapters.Test
 
-config :weather_loop, weather_api_base_url: "http://localhost:8081"
-
 # Print only warnings and errors during test
 config :logger, level: :warn
 

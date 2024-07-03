@@ -1,6 +1,4 @@
 defmodule WeatherLoop.CurrentWeatherApi do
-  @base_url Application.get_env(:weather_loop, :weather_api_base_url)
-
   alias WeatherLoop.Cities.City
   alias WeatherLoop.WeatherInfo
 
@@ -40,15 +38,19 @@ defmodule WeatherLoop.CurrentWeatherApi do
   end
 
   defp url(%{latitude: latitude, longitude: longitude}) do
-    @base_url <> "/data/2.5/weather?lat=#{latitude}&lon=#{longitude}&units=imperial&appid=#{weather_api_key()}"
+    base_url() <> "/data/2.5/weather?lat=#{latitude}&lon=#{longitude}&units=imperial&appid=#{api_key()}"
+  end
+
+  defp base_url do
+    Application.get_env(:weather_loop, WeatherApi)[:weather_api_base_url]
+  end
+
+  defp api_key do
+    Application.get_env(:weather_loop, WeatherApi)[:weather_api_key]
   end
 
   defp decode_response(response) do
     {:ok, %{body: body}} = response
     Jason.decode!(body)
-  end
-
-  defp weather_api_key do
-    FigaroElixir.env["weather_api_key"]
   end
 end
