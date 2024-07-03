@@ -70,7 +70,7 @@ defmodule WeatherLoop.Cities do
     get_path
   end
 
-  def add_url_to_params(nil, field, params), do: params
+  def add_url_to_params(nil, _, params), do: params
   def add_url_to_params(background_image_url, field, params) do
     Map.put(params, field, background_image_url)
   end
