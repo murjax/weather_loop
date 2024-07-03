@@ -4,16 +4,10 @@ defmodule WeatherLoop.ForecastWeatherApi do
 
   def get_forecast_weather_info(city) do
     city
-    |> perform_request
+    |> url()
+    |> Tesla.get()
+    |> decode_response()
     |> parse_forecasts(city)
-  end
-
-  defp perform_request(city) do
-    city
-    |> get_coords
-    |> url
-    |> Tesla.get
-    |> decode_response
   end
 
   defp parse_forecasts(forecasts, %City{} = city) do
@@ -23,33 +17,22 @@ defmodule WeatherLoop.ForecastWeatherApi do
   end
 
   defp parse_attributes(weather_info, %City{} = city) do
-    %{
-      forecast: true,
-      forecast_time: WeatherInfo.forecast_time(weather_info),
-      temperature: WeatherInfo.temperature(weather_info),
-      feels_like: WeatherInfo.feels_like(weather_info),
-      humidity: WeatherInfo.humidity(weather_info),
-      weather_title: WeatherInfo.weather_title(weather_info),
-      weather_description: WeatherInfo.weather_description(weather_info),
-      weather_icon: WeatherInfo.weather_icon(weather_info),
-      city_id: city.id
-    }
+    %{}
+    |> Map.put(:forecast, true)
+    |> Map.put(:forecast_time, WeatherInfo.forecast_time(weather_info))
+    |> Map.put(:temperature, WeatherInfo.temperature(weather_info))
+    |> Map.put(:feels_like, WeatherInfo.feels_like(weather_info))
+    |> Map.put(:humidity, WeatherInfo.humidity(weather_info))
+    |> Map.put(:weather_title, WeatherInfo.weather_title(weather_info))
+    |> Map.put(:weather_description, WeatherInfo.weather_description(weather_info))
+    |> Map.put(:weather_icon, WeatherInfo.weather_icon(weather_info))
+    |> Map.put(:city_id, city.id)
   end
 
-  defp get_coords(%City{latitude: latitude, longitude: longitude}) do
-    %{latitude: latitude, longitude: longitude}
-  end
-
-  defp url(%{latitude: latitude, longitude: longitude}) do
-    base_url() <> "/data/2.5/forecast?lat=#{latitude}&lon=#{longitude}&units=imperial&appid=#{api_key()}"
-  end
-
-  defp base_url do
-    Application.get_env(:weather_loop, WeatherApi)[:weather_api_base_url]
-  end
-
-  defp api_key do
-    Application.get_env(:weather_loop, WeatherApi)[:weather_api_key]
+  defp url(%City{latitude: latitude, longitude: longitude}) do
+    base_url = Application.get_env(:weather_loop, WeatherApi)[:weather_api_base_url]
+    api_key = Application.get_env(:weather_loop, WeatherApi)[:weather_api_key]
+    base_url <> "/data/2.5/forecast?lat=#{latitude}&lon=#{longitude}&units=imperial&appid=#{api_key}"
   end
 
   defp decode_response(response) do
