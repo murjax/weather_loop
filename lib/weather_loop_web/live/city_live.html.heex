@@ -16,7 +16,7 @@
 <div class="mx-auto h-screen">
   <img id="background-1" class="container-background fadein" src={@city.background_image_url}>
   <div class="p-6 relative">
-    <% if @city.audio_url do %>
+    <%= if @city.audio_url do %>
       <button
         id="toggle-music"
         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"

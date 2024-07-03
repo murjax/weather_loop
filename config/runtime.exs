@@ -22,8 +22,11 @@ if config_env() == :dev do
   DotenvParser.load_file(".env")
 end
 
-config :weather_loop, WeatherApi, weather_api_base_url: "https://api.openweathermap.org"
-config :weather_loop, WeatherApi, weather_api_key: System.fetch_env!("WEATHER_API_KEY")
+
+if config_env() != :test do
+  config :weather_loop, WeatherApi, weather_api_base_url: "https://api.openweathermap.org"
+  config :weather_loop, WeatherApi, weather_api_key: System.fetch_env!("WEATHER_API_KEY")
+end
 
 if System.get_env("PHX_SERVER") do
   config :weather_loop, WeatherLoopWeb.Endpoint, server: true

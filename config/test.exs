@@ -23,11 +23,13 @@ config :weather_loop, WeatherLoopWeb.Endpoint,
   secret_key_base: "3lOdl9rOmnBnqyzMhFwE3MP4Jzr+zXfJLoQ1z/PK5IR7kFx6W8//Jf7Vx4YVbEYk",
   server: false
 
+config :weather_loop, WeatherApi, weather_api_base_url: "http://localhost:8081"
+
 # In test we don't send emails.
 config :weather_loop, WeatherLoop.Mailer, adapter: Swoosh.Adapters.Test
 
 # Print only warnings and errors during test
-config :logger, level: :warn
+config :logger, level: :warning
 
 # Initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime
