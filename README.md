@@ -15,7 +15,7 @@ A simple weather dashboard built on Phoenix.
 ### Local setup:
   1. Clone project: `git clone git@github.com:murjax/weather_loop.git`
   2. Navigate into folder `cd weather_loop`
-  3. Add `config/application.yml` with variable `weather_api_key` set to your OpenWeatherMap API key.
+  3. Add `.env` with variable `WEATHER_API_KEY` set to your OpenWeatherMap API key.
   4. Install dependencies: `mix deps.get`
   5. Setup database `mix ecto.setup`
   6. Start the server with `mix phx.server`
