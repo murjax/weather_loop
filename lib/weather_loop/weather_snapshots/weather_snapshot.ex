@@ -41,11 +41,11 @@ defmodule WeatherLoop.WeatherSnapshots.WeatherSnapshot do
     field :weather_title, :string
     field :weather_description, :string
     field :weather_icon, :string
-    field :sunrise, :integer
-    field :sunset, :integer
-    field :dawn, :integer
-    field :dusk, :integer
-    field :forecast_time, :integer
+    field :sunrise, :utc_datetime
+    field :sunset, :utc_datetime
+    field :dawn, :utc_datetime
+    field :dusk, :utc_datetime
+    field :forecast_time, :utc_datetime
     field :forecast, :boolean
     belongs_to :city, WeatherLoop.Cities.City
 

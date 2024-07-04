@@ -21,8 +21,8 @@ defmodule WeatherLoop.CurrentWeatherApi do
     |> Map.put(:weather_title, WeatherInfo.weather_title(weather_info))
     |> Map.put(:weather_description, WeatherInfo.weather_description(weather_info))
     |> Map.put(:weather_icon, WeatherInfo.weather_icon(weather_info))
-    |> Map.put(:sunrise, WeatherInfo.sunrise(weather_info))
-    |> Map.put(:sunset, WeatherInfo.sunset(weather_info))
+    |> Map.put(:sunrise, WeatherInfo.sunrise(weather_info) |> Calendar.DateTime.Parse.unix!())
+    |> Map.put(:sunset, WeatherInfo.sunset(weather_info) |> Calendar.DateTime.Parse.unix!())
     |> Map.put(:city_id, city.id)
   end
 

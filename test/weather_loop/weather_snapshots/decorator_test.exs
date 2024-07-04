@@ -11,8 +11,15 @@ defmodule WeatherLoop.WeatherSnapshots.DecoratorTest do
   setup _context do
     latitude = "30.2919324"
     longitude = "-81.4027473"
+    time_zone = "America/New_York"
 
-    city_attrs = %{name: @city_name, state: "FL", latitude: latitude, longitude: longitude}
+    city_attrs = %{
+      name: @city_name,
+      state: "FL",
+      latitude: latitude,
+      longitude: longitude,
+      time_zone: time_zone
+    }
     {:ok, city} = WeatherLoop.Cities.create_city(city_attrs)
 
     snapshot_attrs = %{
@@ -25,21 +32,23 @@ defmodule WeatherLoop.WeatherSnapshots.DecoratorTest do
       weather_title: "Clear",
       weather_description: "Clear",
       weather_icon: "01d",
-      dawn: 1720070255,
-      dusk: 1720127394,
-      sunrise: 1661638652,
-      sunset: 1661638656,
-      forecast_time: 1661638673,
+      dawn: ~U[2024-07-04 10:00:00Z],
+      dusk: ~U[2024-07-04 22:00:00Z],
+      sunrise: ~U[2024-07-04 10:30:00Z],
+      sunset: ~U[2024-07-04 22:30:00Z],
+      forecast_time: ~U[2024-07-04 12:00:00Z],
       forecast: true,
       city_id: city.id
     }
     {:ok, snapshot} = WeatherLoop.WeatherSnapshots.create_weather_snapshot(snapshot_attrs)
+    snapshot = WeatherLoop.Repo.preload(snapshot, :city)
 
-    {:ok, snapshot: snapshot}
+    {:ok, snapshot: snapshot, time_zone: time_zone}
   end
 
   test ".decorate", context do
     snapshot = context[:snapshot]
+    time_zone = context[:time_zone]
     expected_decorated_snapshot = %DecoratedWeatherSnapshot{
       temperature: round(snapshot.temperature),
       feels_like: round(snapshot.feels_like),
@@ -48,11 +57,11 @@ defmodule WeatherLoop.WeatherSnapshots.DecoratorTest do
       wind: SnapshotConversions.wind_detail(snapshot.wind_direction, snapshot.wind_speed),
       weather_title: snapshot.weather_title,
       icon_url: SnapshotConversions.icon_url(snapshot.weather_icon),
-      dawn: SnapshotConversions.convert_epoch(snapshot.dawn, :skip_shift_zone),
-      dusk: SnapshotConversions.convert_epoch(snapshot.dusk, :skip_shift_zone),
-      sunrise: SnapshotConversions.convert_epoch(snapshot.sunrise),
-      sunset: SnapshotConversions.convert_epoch(snapshot.sunset),
-      forecast_time: SnapshotConversions.convert_epoch(snapshot.forecast_time),
+      dawn: SnapshotConversions.format_snapshot_time(snapshot.dawn, time_zone),
+      dusk: SnapshotConversions.format_snapshot_time(snapshot.dusk, time_zone),
+      sunrise: SnapshotConversions.format_snapshot_time(snapshot.sunrise, time_zone),
+      sunset: SnapshotConversions.format_snapshot_time(snapshot.sunset, time_zone),
+      forecast_time: SnapshotConversions.format_snapshot_time(snapshot.forecast_time, time_zone),
       forecast: snapshot.forecast
     }
 
@@ -63,6 +72,7 @@ defmodule WeatherLoop.WeatherSnapshots.DecoratorTest do
 
   test ".decorate_collection", context do
     snapshot = context[:snapshot]
+    time_zone = context[:time_zone]
     expected_decorated_snapshot = %DecoratedWeatherSnapshot{
       temperature: round(snapshot.temperature),
       feels_like: round(snapshot.feels_like),
@@ -71,11 +81,11 @@ defmodule WeatherLoop.WeatherSnapshots.DecoratorTest do
       wind: SnapshotConversions.wind_detail(snapshot.wind_direction, snapshot.wind_speed),
       weather_title: snapshot.weather_title,
       icon_url: SnapshotConversions.icon_url(snapshot.weather_icon),
-      dawn: SnapshotConversions.convert_epoch(snapshot.dawn, :skip_shift_zone),
-      dusk: SnapshotConversions.convert_epoch(snapshot.dusk, :skip_shift_zone),
-      sunrise: SnapshotConversions.convert_epoch(snapshot.sunrise),
-      sunset: SnapshotConversions.convert_epoch(snapshot.sunset),
-      forecast_time: SnapshotConversions.convert_epoch(snapshot.forecast_time),
+      dawn: SnapshotConversions.format_snapshot_time(snapshot.dawn, time_zone),
+      dusk: SnapshotConversions.format_snapshot_time(snapshot.dusk, time_zone),
+      sunrise: SnapshotConversions.format_snapshot_time(snapshot.sunrise, time_zone),
+      sunset: SnapshotConversions.format_snapshot_time(snapshot.sunset, time_zone),
+      forecast_time: SnapshotConversions.format_snapshot_time(snapshot.forecast_time, time_zone),
       forecast: snapshot.forecast
     }
 

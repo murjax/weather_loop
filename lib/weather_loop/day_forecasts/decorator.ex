@@ -22,7 +22,7 @@ defmodule WeatherLoop.DayForecasts.Decorator do
     %DecoratedDayForecast{
       high_temperature: round(snapshot.high_temperature),
       low_temperature: round(snapshot.low_temperature),
-      time: SnapshotConversions.convert_epoch_day(snapshot.time),
+      time: SnapshotConversions.format_snapshot_day(snapshot.time, snapshot.time_zone),
       primary_condition: snapshot.primary_condition,
       icon_url: SnapshotConversions.icon_url(snapshot.weather_icon)
     }

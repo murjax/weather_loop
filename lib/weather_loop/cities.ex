@@ -74,4 +74,9 @@ defmodule WeatherLoop.Cities do
   def add_url_to_params(background_image_url, field, params) do
     Map.put(params, field, background_image_url)
   end
+
+  def capture_time_zone(city) do
+    data = WeatherLoop.SunriseSunsetApi.get_data(city.latitude, city.longitude)
+    update_city(city, %{time_zone: data[:timezone]})
+  end
 end

@@ -36,6 +36,7 @@ defmodule WeatherLoopWeb.CityController do
                   |> Cities.add_url_to_params("audio_url", city_params)
     case Cities.create_city(city_params) do
       {:ok, city} ->
+        Cities.capture_time_zone(city)
         WeatherLoop.WeatherApi.capture_snapshots(city)
 
         conn
@@ -63,6 +64,7 @@ defmodule WeatherLoopWeb.CityController do
 
     case Cities.update_city(city, city_params) do
       {:ok, city} ->
+        Cities.capture_time_zone(city)
         WeatherLoop.WeatherApi.capture_snapshots(city)
 
         conn

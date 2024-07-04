@@ -103,24 +103,26 @@ defmodule WeatherLoop.SnapshotConversionsTest do
     assert wind_detail == nil
   end
 
-  test ".convert_epoch" do
-    epoch = 1661637565
-    expected_converted_epoch = "05:59pm"
-    converted_epoch = SnapshotConversions.convert_epoch(epoch)
-    assert converted_epoch == expected_converted_epoch
+  test ".format_snapshot_time" do
+    time_zone = "America/New_York"
+    datetime = ~U[2024-07-04 12:00:00Z]
+    expected_formatted_time = "08:00am"
+    formatted_time = SnapshotConversions.format_snapshot_time(datetime, time_zone)
+    assert formatted_time == expected_formatted_time
 
-    converted_epoch = SnapshotConversions.convert_epoch(nil)
-    assert converted_epoch == nil
+    formatted_time = SnapshotConversions.format_snapshot_time(nil, time_zone)
+    assert formatted_time == nil
   end
 
-  test ".convert_epoch_day" do
-    epoch = 1661637565
-    expected_converted_epoch_day = "08/27"
-    converted_epoch_day = SnapshotConversions.convert_epoch_day(epoch)
-    assert converted_epoch_day == expected_converted_epoch_day
+  test ".format_snapshot_day" do
+    time_zone = "America/New_York"
+    datetime = ~U[2024-07-04 12:00:00Z]
+    expected_formatted_day = "07/04"
+    formatted_day = SnapshotConversions.format_snapshot_day(datetime, time_zone)
+    assert formatted_day == expected_formatted_day
 
-    converted_epoch_day = SnapshotConversions.convert_epoch_day(nil)
-    assert converted_epoch_day == nil
+    formatted_day = SnapshotConversions.format_snapshot_day(nil, time_zone)
+    assert formatted_day == nil
   end
 
   test ".icon_url" do
