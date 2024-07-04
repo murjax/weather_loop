@@ -53,12 +53,13 @@ defmodule WeatherLoop.MixProject do
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
-      {:figaro_elixir, "~> 1.0.0"},
       {:tesla, "~> 1.4"},
       {:hackney, "~> 1.17"},
       {:tzdata, "~> 1.1"},
       {:calendar, "~> 1.0.0"},
-      {:tailwind, "~> 0.1", runtime: Mix.env() == :dev}
+      {:tailwind, "~> 0.1", runtime: Mix.env() == :dev},
+      {:dotenv_parser, "~> 2.0.1"},
+      {:timex, "~> 3.0"}
     ]
   end
 

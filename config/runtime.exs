@@ -16,6 +16,19 @@ import Config
 #
 # Alternatively, you can use `mix phx.gen.release` to generate a `bin/server`
 # script that automatically sets the env var above.
+
+
+if config_env() == :dev do
+  DotenvParser.load_file(".env")
+end
+
+
+if config_env() != :test do
+  config :weather_loop, WeatherApi, weather_api_base_url: "https://api.openweathermap.org"
+  config :weather_loop, WeatherApi, weather_api_key: System.fetch_env!("WEATHER_API_KEY")
+  config :weather_loop, sunrise_sunset_api_base_url: "https://api.sunrisesunset.io"
+end
+
 if System.get_env("PHX_SERVER") do
   config :weather_loop, WeatherLoopWeb.Endpoint, server: true
 end

@@ -47,3 +47,4 @@ npm-debug.log
 
 config/application.yml
 .DS_Store
+.env

@@ -1,4 +1,4 @@
-defmodule WeatherLoop.MockServer do
+defmodule WeatherLoop.MockWeatherMapServer do
   use Plug.Router
 
   plug Plug.Parsers, parsers: [:json],
