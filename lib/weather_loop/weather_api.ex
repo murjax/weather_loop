@@ -2,6 +2,7 @@ defmodule WeatherLoop.WeatherApi do
   alias WeatherLoop.Cities.City
   alias WeatherLoop.CurrentWeatherApi
   alias WeatherLoop.ForecastWeatherApi
+  alias WeatherLoop.SunriseSunsetApi
   alias WeatherLoop.WeatherSnapshots
 
   def capture_snapshots(%City{} = city) do
@@ -26,7 +27,12 @@ defmodule WeatherLoop.WeatherApi do
   end
 
   defp get_current_weather_info(city) do
-    CurrentWeatherApi.get_current_weather_info(city)
+    data = CurrentWeatherApi.get_current_weather_info(city)
+    sunrise_sunset_data = SunriseSunsetApi.get_data(city.latitude, city.longitude)
+
+    data
+    |> Map.put(:dawn, sunrise_sunset_data[:dawn])
+    |> Map.put(:dusk, sunrise_sunset_data[:dusk])
   end
 
   defp get_forecast_weather_info(city) do

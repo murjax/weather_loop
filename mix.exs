@@ -58,7 +58,8 @@ defmodule WeatherLoop.MixProject do
       {:tzdata, "~> 1.1"},
       {:calendar, "~> 1.0.0"},
       {:tailwind, "~> 0.1", runtime: Mix.env() == :dev},
-      {:dotenv_parser, "~> 2.0.1"}
+      {:dotenv_parser, "~> 2.0.1"},
+      {:timex, "~> 3.0"}
     ]
   end
 

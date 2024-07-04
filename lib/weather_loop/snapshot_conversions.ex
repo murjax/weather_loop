@@ -58,6 +58,13 @@ defmodule WeatherLoop.SnapshotConversions do
       |> Calendar.Strftime.strftime("%I:%M%P")
     time_string
   end
+  def convert_epoch(nil, :skip_shift_zone), do: nil
+  def convert_epoch(epoch, :skip_shift_zone) do
+    {:ok, time_string} =
+      Calendar.DateTime.Parse.unix!(epoch)
+      |> Calendar.Strftime.strftime("%I:%M%P")
+    time_string
+  end
 
   def convert_epoch_day(nil), do: nil
   def convert_epoch_day(epoch) do

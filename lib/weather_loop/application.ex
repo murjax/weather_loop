@@ -21,9 +21,10 @@ defmodule WeatherLoop.Application do
       # {WeatherLoop.Worker, arg}
     ]
 
-    mock_server = {Plug.Cowboy, scheme: :http, plug: WeatherLoop.MockServer, options: [port: 8081]}
+    mock_weather_map_server = {Plug.Cowboy, scheme: :http, plug: WeatherLoop.MockWeatherMapServer, options: [port: 8081]}
+    mock_sunrise_sunset_server = {Plug.Cowboy, scheme: :http, plug: WeatherLoop.MockSunriseSunsetServer, options: [port: 8082]}
     children = case args do
-      [env: :test] -> children ++ [mock_server]
+      [env: :test] -> [mock_weather_map_server, mock_sunrise_sunset_server | children]
       [_] -> children
     end
 

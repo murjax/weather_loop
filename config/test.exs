@@ -24,6 +24,7 @@ config :weather_loop, WeatherLoopWeb.Endpoint,
   server: false
 
 config :weather_loop, WeatherApi, weather_api_base_url: "http://localhost:8081"
+config :weather_loop, sunrise_sunset_api_base_url: "http://localhost:8082"
 
 # In test we don't send emails.
 config :weather_loop, WeatherLoop.Mailer, adapter: Swoosh.Adapters.Test

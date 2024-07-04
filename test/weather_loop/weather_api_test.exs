@@ -43,6 +43,8 @@ defmodule WeatherLoop.WeatherApiTest do
     assert current_weather_snapshot.weather_icon == "04d"
     assert current_weather_snapshot.sunrise == 1656671237
     assert current_weather_snapshot.sunset == 1656721881
+    assert current_weather_snapshot.dawn == 1720070255
+    assert current_weather_snapshot.dusk == 1720127394
     assert current_weather_snapshot.forecast == nil
     assert current_weather_snapshot.forecast_time == nil
 
