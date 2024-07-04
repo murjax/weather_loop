@@ -41,10 +41,10 @@ defmodule WeatherLoop.WeatherApiTest do
     assert current_weather_snapshot.weather_title == "Clouds"
     assert current_weather_snapshot.weather_description == "broken clouds"
     assert current_weather_snapshot.weather_icon == "04d"
-    assert current_weather_snapshot.sunrise == 1656671237
-    assert current_weather_snapshot.sunset == 1656721881
-    assert current_weather_snapshot.dawn == 1720070255
-    assert current_weather_snapshot.dusk == 1720127394
+    assert current_weather_snapshot.sunrise == ~U[2022-07-01 10:27:17Z]
+    assert current_weather_snapshot.sunset == ~U[2022-07-02 00:31:21Z]
+    assert current_weather_snapshot.dawn == ~U[2024-07-04 09:17:35Z]
+    assert current_weather_snapshot.dusk == ~U[2024-07-05 01:09:54Z]
     assert current_weather_snapshot.forecast == nil
     assert current_weather_snapshot.forecast_time == nil
 
@@ -55,7 +55,7 @@ defmodule WeatherLoop.WeatherApiTest do
     assert forecast_weather_snapshot.weather_description == "broken clouds"
     assert forecast_weather_snapshot.weather_icon == "04d"
     assert forecast_weather_snapshot.forecast == true
-    assert forecast_weather_snapshot.forecast_time == 1656711307
+    assert forecast_weather_snapshot.forecast_time == ~U[2022-07-01 21:35:07Z]
 
     snapshots = WeatherLoop.WeatherApi.capture_snapshots(nil)
     assert snapshots == nil

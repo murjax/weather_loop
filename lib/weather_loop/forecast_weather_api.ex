@@ -19,7 +19,7 @@ defmodule WeatherLoop.ForecastWeatherApi do
   defp parse_attributes(weather_info, %City{} = city) do
     %{}
     |> Map.put(:forecast, true)
-    |> Map.put(:forecast_time, WeatherInfo.forecast_time(weather_info))
+    |> Map.put(:forecast_time, WeatherInfo.forecast_time(weather_info) |> Calendar.DateTime.Parse.unix!())
     |> Map.put(:temperature, WeatherInfo.temperature(weather_info))
     |> Map.put(:feels_like, WeatherInfo.feels_like(weather_info))
     |> Map.put(:humidity, WeatherInfo.humidity(weather_info))

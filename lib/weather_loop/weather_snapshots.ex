@@ -27,6 +27,7 @@ defmodule WeatherLoop.WeatherSnapshots do
 
   def get_current_weather_snapshot_for_city_id(city_id) do
     query = from snapshot in WeatherSnapshot,
+      preload: [:city],
       where: [city_id: ^city_id],
       where: snapshot.forecast == false,
       order_by: [desc: :id],
@@ -37,6 +38,7 @@ defmodule WeatherLoop.WeatherSnapshots do
 
   def get_forecast_snapshots_for_city_id(city_id, starting_at) do
     query = from snapshot in WeatherSnapshot,
+      preload: [:city],
       where: [city_id: ^city_id],
       where: snapshot.forecast == true,
       where: snapshot.forecast_time >= ^starting_at,
@@ -47,6 +49,7 @@ defmodule WeatherLoop.WeatherSnapshots do
 
   def get_forecast_snapshots_for_city_id(city_id, starting_at, limit) do
     query = from snapshot in WeatherSnapshot,
+      preload: [:city],
       where: [city_id: ^city_id],
       where: snapshot.forecast == true,
       where: snapshot.forecast_time >= ^starting_at,
@@ -68,7 +71,7 @@ defmodule WeatherLoop.WeatherSnapshots do
 
   def get_snapshot_collection_for_city_id(city_id) do
     current_weather_snapshot = get_current_weather_snapshot_for_city_id(city_id)
-    forecasts_start_at = DateTime.now!("Etc/UTC") |> DateTime.to_unix
+    forecasts_start_at = DateTime.now!("Etc/UTC")
     forecast_snapshots = get_forecast_snapshots_for_city_id(city_id, forecasts_start_at, 4)
     all_forecast_snapshots = get_forecast_snapshots_for_city_id(city_id, forecasts_start_at)
     day_forecasts = get_day_forecasts(all_forecast_snapshots)
@@ -92,7 +95,9 @@ defmodule WeatherLoop.WeatherSnapshots do
   end
 
   defp get_day_forecasts(snapshots) do
-    forecast_times = WeatherLoop.DayForecasts.ForecastTimes.calculate
+    time_zone = List.first(snapshots).city.time_zone
+    forecast_times = WeatherLoop.DayForecasts.ForecastTimes.calculate(time_zone)
+
     day_one = forecast_times[:day_one]
     day_two = forecast_times[:day_two]
     day_three = forecast_times[:day_three]
@@ -101,14 +106,14 @@ defmodule WeatherLoop.WeatherSnapshots do
     day_two_snapshots = snapshots_for_day(snapshots, day_two[:start_of_day], day_two[:end_of_day])
     day_three_snapshots = snapshots_for_day(snapshots, day_three[:start_of_day], day_three[:end_of_day])
 
-    day_one_forecast = get_day_forecast(day_one_snapshots, day_one[:start_of_day])
-    day_two_forecast = get_day_forecast(day_two_snapshots, day_two[:start_of_day])
-    day_three_forecast = get_day_forecast(day_three_snapshots, day_three[:start_of_day])
+    day_one_forecast = get_day_forecast(day_one_snapshots, time_zone, day_one[:start_of_day])
+    day_two_forecast = get_day_forecast(day_two_snapshots, time_zone, day_two[:start_of_day])
+    day_three_forecast = get_day_forecast(day_three_snapshots, time_zone, day_three[:start_of_day])
 
     [day_one_forecast, day_two_forecast, day_three_forecast]
   end
 
-  defp get_day_forecast(snapshots, day_epoch) do
+  defp get_day_forecast(snapshots, time_zone, datetime) do
     temperatures = Enum.map(snapshots, fn snapshot -> snapshot.temperature end)
     low_temperature = Enum.min(temperatures)
     high_temperature = Enum.max(temperatures)
@@ -142,7 +147,8 @@ defmodule WeatherLoop.WeatherSnapshots do
     end
 
     %{
-      time: day_epoch,
+      time: datetime,
+      time_zone: time_zone,
       high_temperature: high_temperature,
       low_temperature: low_temperature,
       primary_condition: primary_condition,

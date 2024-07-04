@@ -23,7 +23,7 @@ defmodule WeatherLoop.CurrentWeatherApiTest do
     assert current_weather_info[:weather_title] == "Clouds"
     assert current_weather_info[:weather_description] == "broken clouds"
     assert current_weather_info[:weather_icon] == "04d"
-    assert current_weather_info[:sunrise] == 1656671237
-    assert current_weather_info[:sunset] == 1656721881
+    assert current_weather_info[:sunrise] == ~U[2022-07-01 10:27:17Z]
+    assert current_weather_info[:sunset] == ~U[2022-07-02 00:31:21Z]
   end
 end

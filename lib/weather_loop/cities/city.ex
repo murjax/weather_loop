@@ -7,6 +7,7 @@ defmodule WeatherLoop.Cities.City do
     :state,
     :latitude,
     :longitude,
+    :time_zone,
     :radar_url,
     :audio_url,
     :background_image_url,
@@ -19,6 +20,7 @@ defmodule WeatherLoop.Cities.City do
     field :state, :string
     field :latitude, :string
     field :longitude, :string
+    field :time_zone, :string
     field :radar_url, :string
     field :background_image_url, :string
     field :audio_url, :string
@@ -29,7 +31,7 @@ defmodule WeatherLoop.Cities.City do
 
   def changeset(city, params \\ %{}) do
     city
-    |> cast(params, [:name, :state, :latitude, :longitude, :radar_url, :background_image_url, :audio_url, :user_id])
+    |> cast(params, [:name, :state, :latitude, :longitude, :time_zone, :radar_url, :background_image_url, :audio_url, :user_id])
     |> validate_required([:name, :state, :latitude, :longitude])
   end
 end

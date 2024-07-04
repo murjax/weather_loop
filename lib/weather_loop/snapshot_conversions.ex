@@ -50,36 +50,22 @@ defmodule WeatherLoop.SnapshotConversions do
     "#{cardinal_direction(wind_direction)} at #{round(wind_speed)} mph"
   end
 
-  def convert_epoch(nil), do: nil
-  def convert_epoch(epoch) do
-    {:ok, time_string} =
-      Calendar.DateTime.Parse.unix!(epoch)
-      |> Calendar.DateTime.shift_zone!("America/New_York")
-      |> Calendar.Strftime.strftime("%I:%M%P")
-    time_string
-  end
-  def convert_epoch(nil, :skip_shift_zone), do: nil
-  def convert_epoch(epoch, :skip_shift_zone) do
-    {:ok, time_string} =
-      Calendar.DateTime.Parse.unix!(epoch)
-      |> Calendar.Strftime.strftime("%I:%M%P")
+  def format_snapshot_day(nil, _), do: nil
+  def format_snapshot_day(datetime, time_zone) do
+    {:ok, time_string} = datetime
+    |> Calendar.DateTime.shift_zone!(time_zone)
+    |> Calendar.Strftime.strftime("%m/%d")
+
     time_string
   end
 
-  def convert_epoch_day(nil), do: nil
-  def convert_epoch_day(epoch) do
-    {:ok, time_string} =
-      Calendar.DateTime.Parse.unix!(epoch)
-      |> Calendar.DateTime.shift_zone!("America/New_York")
-      |> Calendar.Strftime.strftime("%m/%d")
-    time_string
-  end
+  def format_snapshot_time(nil, _), do: nil
+  def format_snapshot_time(datetime, time_zone) do
+    {:ok, time_string} = datetime
+    |> Calendar.DateTime.shift_zone!(time_zone)
+    |> Calendar.Strftime.strftime("%I:%M%P")
 
-  def raw_convert_epoch(epoch) do
-    {:ok, time} =
-      Calendar.DateTime.Parse.unix!(epoch)
-      |> Calendar.DateTime.shift_zone!("America/New_York")
-    time
+    time_string
   end
 
   def icon_url(weather_icon) do

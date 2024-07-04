@@ -16,7 +16,7 @@ defmodule WeatherLoop.ForecastWeatherApiTest do
     forecast_weather_info = WeatherLoop.ForecastWeatherApi.get_forecast_weather_info(context[:city])
     weather_info = List.first(forecast_weather_info)
 
-    assert weather_info[:forecast_time] == 1656711307
+    assert weather_info[:forecast_time] == ~U[2022-07-01 21:35:07Z]
     assert weather_info[:forecast] == true
     assert weather_info[:temperature] == 89.5
     assert weather_info[:feels_like] == 80.38

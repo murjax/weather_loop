@@ -10,7 +10,7 @@ defmodule WeatherLoop.SunriseSunsetApi do
 
   defp parse_attributes(%{"results" => results}) do
     Enum.reduce(results, %{}, fn {key, value}, acc -> Map.put(acc, String.to_atom(key), value) end)
-    |> convert_times_to_epoch()
+    |> convert_times_to_datetime()
   end
 
   defp decode_response(response) do
@@ -18,7 +18,7 @@ defmodule WeatherLoop.SunriseSunsetApi do
     Jason.decode!(body)
   end
 
-  defp convert_times_to_epoch(results) do
+  defp convert_times_to_datetime(results) do
     date_fields = [
       :sunrise,
       :sunset,
@@ -29,16 +29,21 @@ defmodule WeatherLoop.SunriseSunsetApi do
       :solar_noon,
       :golden_hour
     ]
-    date = results[:date]
-    Enum.reduce(date_fields, results, fn key, acc -> Map.put(acc, key, build_datetime(date, results[key])) end)
+    date_string = results[:date]
+    time_zone = results[:timezone]
+    {:ok, date} = Date.from_iso8601(date_string)
+
+    Enum.reduce(
+      date_fields,
+      results,
+      fn key, acc -> Map.put(acc, key, build_datetime(date, time_zone, results[key])) end
+    )
   end
 
-  defp build_datetime(date_string, time_string) do
-    {:ok, date} = Date.from_iso8601(date_string)
+  defp build_datetime(date, time_zone, time_string) do
     {:ok, time} = Timex.parse(time_string, "%k:%M:%S %p", :strftime)
     {:ok, time} = Time.new(time.hour, time.minute, time.second)
-    {:ok, ndt} = NaiveDateTime.new(date, time)
-    unix_epoch = ~N[1970-01-01 00:00:00]
-    NaiveDateTime.diff(ndt, unix_epoch)
+    {:ok, datetime} = DateTime.new(date, time, time_zone)
+    datetime |> Calendar.DateTime.shift_zone!("UTC")
   end
 end

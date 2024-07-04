@@ -35,11 +35,11 @@ defmodule WeatherLoop.WeatherSnapshots.Decorator do
       wind: SnapshotConversions.wind_detail(snapshot.wind_direction, snapshot.wind_speed),
       weather_title: snapshot.weather_title,
       icon_url: SnapshotConversions.icon_url(snapshot.weather_icon),
-      dawn: SnapshotConversions.convert_epoch(snapshot.dawn, :skip_shift_zone),
-      dusk: SnapshotConversions.convert_epoch(snapshot.dusk, :skip_shift_zone),
-      sunrise: SnapshotConversions.convert_epoch(snapshot.sunrise),
-      sunset: SnapshotConversions.convert_epoch(snapshot.sunset),
-      forecast_time: SnapshotConversions.convert_epoch(snapshot.forecast_time),
+      dawn: SnapshotConversions.format_snapshot_time(snapshot.dawn, snapshot.city.time_zone),
+      dusk: SnapshotConversions.format_snapshot_time(snapshot.dusk, snapshot.city.time_zone),
+      sunrise: SnapshotConversions.format_snapshot_time(snapshot.sunrise, snapshot.city.time_zone),
+      sunset: SnapshotConversions.format_snapshot_time(snapshot.sunset, snapshot.city.time_zone),
+      forecast_time: SnapshotConversions.format_snapshot_time(snapshot.forecast_time, snapshot.city.time_zone),
       forecast: snapshot.forecast
     }
   end
