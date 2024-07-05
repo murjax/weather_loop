@@ -242,6 +242,13 @@ defmodule WeatherLoop.Accounts do
   end
 
   @doc """
+  Gets the user with the given api token.
+  """
+  def get_user_by_api_token(token) do
+    (from user in User, where: user.api_token == ^token) |> Repo.one()
+  end
+
+  @doc """
   Deletes the signed token with the given context.
   """
   def delete_session_token(token) do
