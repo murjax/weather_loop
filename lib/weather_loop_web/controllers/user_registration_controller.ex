@@ -18,6 +18,7 @@ defmodule WeatherLoopWeb.UserRegistrationController do
             user,
             &Routes.user_confirmation_url(conn, :edit, &1)
           )
+          Accounts.set_api_token(user)
 
         conn
         |> put_flash(:info, "User created successfully.")
