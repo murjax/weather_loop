@@ -146,4 +146,44 @@ defmodule WeatherLoopWeb.UserAuth do
   defp maybe_store_return_to(conn), do: conn
 
   defp signed_in_path(_conn), do: "/"
+
+  def require_api_token(conn, _opts) do
+    token = api_auth_token(conn.req_headers)
+
+    if token do
+      user = Accounts.get_user_by_api_token(token)
+
+      if user do
+        conn |> assign(:current_user, user)
+      else
+        conn |> send_api_unauthorized
+      end
+    else
+      conn |> send_api_unauthorized
+    end
+  end
+
+  defp header_is_auth({"authorization", _}), do: true
+  defp header_is_auth({_other, _}), do: false
+
+  defp api_auth_token(headers) do
+    headers
+    |> Enum.find(fn header -> header_is_auth(header) end)
+    |> get_auth_token_from_header
+  end
+
+  defp get_auth_token_from_header({"authorization", token_string}) do
+    token_string
+    |> String.split("Token token=")
+    |> List.last
+  end
+  defp get_auth_token_from_header({_other_header, _other_value}), do: nil
+  defp get_auth_token_from_header(nil), do: nil
+
+    defp send_api_unauthorized(conn) do
+    conn
+    |> put_status(:unauthorized)
+    |> render(WeatherLoopWeb.Api.SharedView, "unauthorized.json")
+    |> halt()
+  end
 end

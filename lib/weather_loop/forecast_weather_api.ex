@@ -10,6 +10,7 @@ defmodule WeatherLoop.ForecastWeatherApi do
     |> parse_forecasts(city)
   end
 
+  defp parse_forecasts(forecasts, _) when forecasts == %{}, do: []
   defp parse_forecasts(forecasts, %City{} = city) do
     %{"list" => forecast_list} = forecasts
 
@@ -35,8 +36,9 @@ defmodule WeatherLoop.ForecastWeatherApi do
     base_url <> "/data/2.5/forecast?lat=#{latitude}&lon=#{longitude}&units=imperial&appid=#{api_key}"
   end
 
-  defp decode_response(response) do
+  defp decode_response({:ok, %{status: 200}} = response) do
     {:ok, %{body: body}} = response
     Jason.decode!(body)
   end
+  defp decode_response(_), do: %{}
 end

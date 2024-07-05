@@ -25,6 +25,12 @@ defmodule WeatherLoopWeb.Router do
     live "/cities/:id", CityLive
   end
 
+  scope "/api", WeatherLoopWeb.Api, as: :api do
+    pipe_through [:api, :require_api_token]
+
+    resources "/cities", CityController, only: [:index, :show]
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", WeatherLoopWeb do
   #   pipe_through :api

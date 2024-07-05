@@ -1,5 +1,10 @@
 <h1 class="text-center text-4xl">Settings</h1>
 
+<h3 class="text-2xl ml-2">API</h3>
+<div class="m-2 p-2 border-2">
+  <p>Token: <%= @current_user.api_token %></p>
+</div>
+
 <h3 class="text-2xl ml-2">Change email</h3>
 <div class="m-2 p-2 border-2">
   <.form let={f} for={@email_changeset} action={Routes.user_settings_path(@conn, :update)} id="update_email">

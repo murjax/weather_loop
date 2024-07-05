@@ -28,3 +28,13 @@ A simple weather dashboard built on Phoenix.
   13. Save the city.
   14. Click on your city.
   15. Your dashboard is now running!
+
+### API
+Each user account comes with a UUID API token. To view, visit `/users/settings`.
+
+#### Endpoints
+- `/api/cities` - Shows list of cities with basic information.
+- `/api/cities/:id` - Shows city info, current weather, hourly forecasts, and day forecasts.
+
+# Source
+Data is sourced from [OpenWeatherMap](https://openweathermap.org/) and [sunrisesunset.io](https://sunrisesunset.io/).

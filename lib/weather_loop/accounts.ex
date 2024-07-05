@@ -95,6 +95,13 @@ defmodule WeatherLoop.Accounts do
 
   ## Settings
 
+  def set_api_token(user) do
+    api_token = Ecto.UUID.generate()
+    user
+    |> Ecto.Changeset.cast(%{api_token: api_token}, [:api_token])
+    |> Repo.update()
+  end
+
   @doc """
   Returns an `%Ecto.Changeset{}` for changing the user email.
 
@@ -232,6 +239,13 @@ defmodule WeatherLoop.Accounts do
   def get_user_by_session_token(token) do
     {:ok, query} = UserToken.verify_session_token_query(token)
     Repo.one(query)
+  end
+
+  @doc """
+  Gets the user with the given api token.
+  """
+  def get_user_by_api_token(token) do
+    (from user in User, where: user.api_token == ^token) |> Repo.one()
   end
 
   @doc """
