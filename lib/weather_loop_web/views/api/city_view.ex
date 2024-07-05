@@ -5,7 +5,5 @@ defmodule WeatherLoopWeb.Api.CityView do
     %{cities: cities}
   end
 
-  def render("show.json", %{response: response}) do
-    response
-  end
+  def render("show.json", %{response: response}), do: response
 end
