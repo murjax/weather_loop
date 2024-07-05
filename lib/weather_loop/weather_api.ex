@@ -30,9 +30,13 @@ defmodule WeatherLoop.WeatherApi do
     data = CurrentWeatherApi.get_current_weather_info(city)
     sunrise_sunset_data = SunriseSunsetApi.get_data(city.latitude, city.longitude)
 
-    data
-    |> Map.put(:dawn, sunrise_sunset_data[:dawn])
-    |> Map.put(:dusk, sunrise_sunset_data[:dusk])
+    if sunrise_sunset_data != %{} do
+      data
+      |> Map.put(:dawn, sunrise_sunset_data[:dawn])
+      |> Map.put(:dusk, sunrise_sunset_data[:dusk])
+    else
+      data
+    end
   end
 
   defp get_forecast_weather_info(city) do
@@ -43,8 +47,10 @@ defmodule WeatherLoop.WeatherApi do
     current_weather_snapshot = create_snapshot(weather_info_set[:current])
     forecast_snapshots = Enum.map(weather_info_set[:forecast], fn weather_info -> create_snapshot(weather_info) end)
     [current_weather_snapshot | forecast_snapshots]
+    |> Enum.reject(& &1 == nil)
   end
 
+  defp create_snapshot(attributes) when attributes == %{}, do: nil
   defp create_snapshot(attributes) do
     result = WeatherSnapshots.create_weather_snapshot(attributes)
     {:ok, snapshot} = result

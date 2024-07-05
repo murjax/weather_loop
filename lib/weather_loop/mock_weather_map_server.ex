@@ -9,16 +9,44 @@ defmodule WeatherLoop.MockWeatherMapServer do
   plug :dispatch
 
   get "/data/2.5/weather/*query_params" do
-    success(conn, sample_current_weather())
+    process_current_response(conn)
   end
 
   get "/data/2.5/forecast/*query_params" do
+    process_forecast_response(conn)
+  end
+
+  defp process_current_response(%{query_params: %{"lat" => "30.0425055", "lon" => "-81.7312244"}} = conn) do
+    failure(conn, failure_response())
+  end
+
+  defp process_current_response(conn) do
+    success(conn, sample_current_weather())
+  end
+
+  defp process_forecast_response(%{query_params: %{"lat" => "30.0425055", "lon" => "-81.7312244"}} = conn) do
+    failure(conn, failure_response())
+  end
+
+  defp process_forecast_response(conn) do
     success(conn, sample_forecast_weather())
   end
 
   defp success(conn, body) do
     conn
     |> Plug.Conn.send_resp(200, Jason.encode!(body))
+  end
+
+  defp failure(conn, body) do
+    conn
+    |> Plug.Conn.send_resp(400, Jason.encode!(body))
+  end
+
+  defp failure_response do
+    %{
+      "cod" => "400",
+      "message" => "Nothing to geocode"
+    }
   end
 
   defp sample_current_weather do

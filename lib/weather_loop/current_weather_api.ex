@@ -10,6 +10,7 @@ defmodule WeatherLoop.CurrentWeatherApi do
     |> parse_attributes(city)
   end
 
+  defp parse_attributes(weather_info, _) when weather_info == %{}, do: %{}
   defp parse_attributes(weather_info, %City{} = city) do
     %{}
     |> Map.put(:temperature, WeatherInfo.temperature(weather_info))
@@ -32,8 +33,9 @@ defmodule WeatherLoop.CurrentWeatherApi do
     base_url <> "/data/2.5/weather?lat=#{latitude}&lon=#{longitude}&units=imperial&appid=#{api_key}"
   end
 
-  defp decode_response(response) do
+  defp decode_response({:ok, %{status: 200}} = response) do
     {:ok, %{body: body}} = response
     Jason.decode!(body)
   end
+  defp decode_response(_), do: %{}
 end

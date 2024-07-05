@@ -21,4 +21,13 @@ defmodule WeatherLoop.SunriseSunsetApiTest do
     assert data[:timezone] == "America/New_York"
     assert data[:utc_offset] == -240
   end
+
+  test ".get_data failure" do
+    latitude = "30.0425055"
+    longitude = "-81.7312244"
+
+    data = WeatherLoop.SunriseSunsetApi.get_data(latitude, longitude)
+
+    assert data == %{}
+  end
 end

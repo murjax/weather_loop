@@ -8,15 +8,17 @@ defmodule WeatherLoop.SunriseSunsetApi do
     |> parse_attributes()
   end
 
+  defp parse_attributes(data) when data == %{}, do: %{}
   defp parse_attributes(%{"results" => results}) do
     Enum.reduce(results, %{}, fn {key, value}, acc -> Map.put(acc, String.to_atom(key), value) end)
     |> convert_times_to_datetime()
   end
 
-  defp decode_response(response) do
+  defp decode_response({:ok, %{status: 200}} = response) do
     {:ok, %{body: body}} = response
     Jason.decode!(body)
   end
+  defp decode_response(_), do: %{}
 
   defp convert_times_to_datetime(results) do
     date_fields = [

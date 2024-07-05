@@ -9,12 +9,29 @@ defmodule WeatherLoop.MockSunriseSunsetServer do
   plug :dispatch
 
   get "/json/*query_params" do
+    process_response(conn)
+  end
+
+  defp process_response(%{query_params: %{"lat" => "30.0425055", "lng" => "-81.7312244"}} = conn) do
+    failure(conn, failure_response())
+  end
+
+  defp process_response(conn) do
     success(conn, sample_response())
   end
 
   defp success(conn, body) do
     conn
     |> Plug.Conn.send_resp(200, Jason.encode!(body))
+  end
+
+  defp failure(conn, body) do
+    conn
+    |> Plug.Conn.send_resp(400, Jason.encode!(body))
+  end
+
+  defp failure_response do
+    %{"status" => "ERROR"}
   end
 
   defp sample_response do
